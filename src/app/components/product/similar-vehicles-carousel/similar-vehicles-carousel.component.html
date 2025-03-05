@@ -13,7 +13,7 @@
 
         <img
           *ngIf="vehicle.imagenes?.length"
-          [src]="'http://localhost:3000/uploads/' + vehicle.imagenes[0]"
+          [src]="environment.SERVER_URL+'/uploads/' + vehicle.imagenes[0]"
           alt="{{ vehicle.marca.nombreMarca }} {{ vehicle.modelo }}"
           class="w-full h-40 object-cover rounded mb-2"
         />

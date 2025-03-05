@@ -5,12 +5,13 @@ import { Observable } from 'rxjs';
 import { Rent } from '../models/rent.interface';
 import { User } from '../models/user.interface';
 import { AuthToken } from '../../functions/authToken.function';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RentsService {
-  private url = 'http://localhost:3000/api/alquiler';
+  private url = environment.SERVER_URL+'/api/alquiler';
 
   constructor(private http: HttpClient) { }
   getAllRents(): Observable<Rent[]> {
@@ -67,7 +68,7 @@ export class RentsService {
       .set(authHeaders.keys()[0], authHeaders.get(authHeaders.keys()[0]) || '');
   
     return this.http.post<any>(
-      'http://localhost:3000/api/mercadopago/create-preference', 
+      environment.SERVER_URL+'/api/mercadopago/create-preference', 
       items, 
       { headers }
     );

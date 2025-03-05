@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Compra } from '../models/compra.interfaces';
 import { AuthToken } from '../../functions/authToken.function';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompraService {
-  private apiUrl = 'http://localhost:3000/api/compras';
+  private apiUrl = environment.SERVER_URL+'/api/compras';
   
   
   

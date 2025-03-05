@@ -23,7 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { alertMethod } from '../../../shared/components/alerts/alert-function/alerts.functions';
 import { QualificationCalculator } from '../../../shared/components/qualification-calculator/qualification-calculator';
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../../environments/environment';
 
 declare const MercadoPago: any;
 

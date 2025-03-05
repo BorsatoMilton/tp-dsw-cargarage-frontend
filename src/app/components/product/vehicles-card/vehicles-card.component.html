@@ -19,7 +19,7 @@
               <img
                 id="imagen-vehiculo"
                 class="card-img-top img-fluid"
-                [src]="'http://localhost:3000/uploads/' + vehiculo.imagenes[0]"
+                [src]="environment.SERVER_URL+'/uploads/' + vehiculo.imagenes[0]"
                 alt="Imagen del vehículo"
                 *ngIf="vehiculo.imagenes.length > 0"
               />

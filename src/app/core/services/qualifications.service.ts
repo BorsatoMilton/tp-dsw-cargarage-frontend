@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Qualification } from '../models/qualification.inteface';
 import { Observable } from 'rxjs';
 import { AuthToken } from '../../functions/authToken.function';
-
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class QualificationsService {
 
   constructor(private http: HttpClient) { }
 
-  private apiUrl = 'http://localhost:3000/api/calificaciones';
+  private apiUrl = environment.SERVER_URL+'/api/calificaciones';
 
   getQualificationsByUserId(userId: string): Observable<Qualification[]> {
     const authToken = new AuthToken();

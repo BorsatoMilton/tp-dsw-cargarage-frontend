@@ -24,7 +24,7 @@
                 (click)="openLightbox(i)"
               >
                 <img
-                  [src]="'http://localhost:3000/uploads/' + imagen"
+                  [src]="environment.SERVER_URL+'/uploads/' + imagen"
                   alt="Imagen del vehículo"
                   class="carousel-image w-full h-48 object-cover rounded-lg border-2 border-gray-200 cursor-zoom-in"
                 />
@@ -236,7 +236,7 @@
   >
     <div class="lightbox-container">
       <img
-        [src]="'http://localhost:3000/uploads/' + selectedImage"
+        [src]="environmentSERVER_URL+'/uploads/' + selectedImage"
         class="lightbox-image"
         alt="Vista ampliada"
         (click)="$event.stopPropagation()"

@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Faq } from '../models/faq.interface';
 import { AuthToken } from '../../functions/authToken.function';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FaqService {
-  apiUrl = 'http://localhost:3000/api/faq';
+  apiUrl = environment.SERVER_URL+'/api/faq';
 
   constructor(private http: HttpClient) { }
 

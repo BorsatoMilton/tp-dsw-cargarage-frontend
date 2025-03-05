@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { Vehicle } from '../models/vehicles.interface';
 import { map } from 'rxjs/operators';
 import { AuthToken } from '../../functions/authToken.function';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class VehiclesService {
-  private apiUrl = 'http://localhost:3000/api/vehiculos';
+  private apiUrl = environment.SERVER_URL+'/api/vehiculos';
 
   constructor(private http:HttpClient) { }
   addVehicle(formData: FormData): Observable<Vehicle> {

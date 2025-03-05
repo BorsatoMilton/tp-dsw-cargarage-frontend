@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { VehiclesService } from '../../../core/services/vehicles.service';
 import { alertMethod } from '../../../shared/components/alerts/alert-function/alerts.functions';
 import { UniversalAlertComponent } from '../../../shared/components/alerts/universal-alert/universal-alert.component';
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../../environments/environment';
 
 
 declare const MercadoPago: any;

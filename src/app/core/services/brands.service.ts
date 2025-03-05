@@ -3,12 +3,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Brand } from '../models/brands.interfaces';
 import { AuthToken } from '../../functions/authToken.function';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrandsService {
-  private apiUrl = 'http://localhost:3000/api/marcas';
+  private apiUrl = environment.SERVER_URL+'/api/marcas';
 
   constructor(private http:HttpClient) { }
   addBrand(brand: Brand): Observable<Brand> {

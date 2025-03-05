@@ -87,7 +87,7 @@ describe('LoginComponent', () => {
 
     const req = httpTestingController.expectOne({
       method: 'POST',
-      url: 'http://localhost:3000/api/usuarios/login',
+      url: environmentSERVER_URL+'/api/usuarios/login',
     });
 
     req.flush(mockResponse);
@@ -107,7 +107,7 @@ describe('LoginComponent', () => {
     component.login();
 
     const req = httpTestingController.expectOne(
-      'http://localhost:3000/api/usuarios/login'
+      environmentSERVER_URL+'/api/usuarios/login'
     );
 
     req.flush('Usuario no encontrado', {
@@ -134,7 +134,7 @@ describe('LoginComponent', () => {
     component.login();
 
     const req = httpTestingController.expectOne(
-      'http://localhost:3000/api/usuarios/login'
+      environmentSERVER_URL+'/api/usuarios/login'
     );
     req.flush('Contraseña incorrecta', {
       status: 401,

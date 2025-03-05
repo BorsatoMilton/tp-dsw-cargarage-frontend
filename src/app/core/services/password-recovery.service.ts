@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {RecoveryPassword} from '../models/recovery-password';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PasswordRecoveryService {
 
-  private apiUrl = 'http://localhost:3000/api/recuperacion'; 
+  private apiUrl = environment.SERVER_URL+'/api/recuperacion'; 
 
   constructor(private http: HttpClient) { }
 
