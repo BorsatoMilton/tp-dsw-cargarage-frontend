@@ -15,7 +15,7 @@ export interface Vehicle {
     modelo: string;
     marca: Brand;
     categoria: Category;
-    imagenes: string[];
+    imagenes?: string[];
     propietario: User;
     transmision: string;
     compra: Compra;
