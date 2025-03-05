@@ -20,6 +20,7 @@ import { Category } from '../../../core/models/categories.interface';
 import { alertMethod } from '../../../shared/components/alerts/alert-function/alerts.functions';
 import { UniversalAlertComponent } from '../../../shared/components/alerts/universal-alert/universal-alert.component';
 import { QualificationCalculator } from '../../../shared/components/qualification-calculator/qualification-calculator';
+import { environment } from '../../../../environments/environment.js';
 
 @Component({
   selector: 'app-compra',
@@ -29,6 +30,7 @@ import { QualificationCalculator } from '../../../shared/components/qualificatio
   styleUrl: './compra.component.css',
 })
 export class CompraComponent implements OnInit {
+  public environment = environment;
   compraForm: FormGroup = new FormGroup({});
   compras: Compra[] = [];
   selectedCompra: Compra | null = null;

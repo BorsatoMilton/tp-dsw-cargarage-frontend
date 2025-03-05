@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Vehicle } from '../../../core/models/vehicles.interface';
 import { VehiclesService } from '../../../core/services/vehicles.service';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment.js';
 
 @Component({
   selector: 'app-similar-vehicles-carousel',
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './similar-vehicles-carousel.component.css'
 })
 export class SimilarVehiclesCarouselComponent implements OnChanges {
+  public environment = environment;
   @Input() categoryId: string | null = null;
   @Input() excludeVehicleId: string | null = null;
   @Input() isRent: boolean = false;

@@ -16,7 +16,7 @@
               *ngFor="let imagen of vehiculo.imagenes; let i = index"
               [class.active]="i === currentSlideIndex"
               (click)="openLightbox(i)">
-           <img [src]="environmentSERVER_URL+'/uploads/' + imagen" 
+           <img [src]="environment.SERVER_URL+'/uploads/' + imagen" 
                 alt="Imagen del vehículo"
                 class="carousel-image w-full h-48 object-cover rounded-lg border-2 border-gray-200 cursor-zoom-in">
               </div>
@@ -211,7 +211,7 @@
      (click)="closeLightboxOnBackdrop($event)">
   <div class="modal-contentChanged max-w-4xl" (click)="$event.stopPropagation()">
     <div class="lightbox-container">
-      <img [src]="environmentSERVER_URL+'/uploads/' + selectedImage" 
+      <img [src]="environment.SERVER_URL+'/uploads/' + selectedImage" 
            class="lightbox-image" 
            alt="Vista ampliada"
            (click)="$event.stopPropagation()">

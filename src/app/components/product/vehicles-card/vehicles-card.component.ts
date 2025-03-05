@@ -10,6 +10,7 @@ import { HostListener } from '@angular/core';
 import { MatBottomSheet} from '@angular/material/bottom-sheet'; 
 import { BottomSheetComponent } from '../../../shared/components/bottom-sheet/bottom-sheet.component'; 
 import { BottomSheetConfig } from '../../../core/models/bottom-sheet.interface';
+import { environment } from '../../../../environments/environment.js';
 
 
 @Component({
@@ -20,6 +21,7 @@ import { BottomSheetConfig } from '../../../core/models/bottom-sheet.interface';
   styleUrl: './vehicles-card.component.css',
 })
 export class VehiclesCardComponent {
+  public environment = environment;
   vehicles: Vehicle[] = [];
   filteredVehicles: Vehicle[] = [];
   usuarioActual: User | null = null;

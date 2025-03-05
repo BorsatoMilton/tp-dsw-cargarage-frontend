@@ -20,6 +20,7 @@ declare const MercadoPago: any;
   styleUrl: './confirm-rent.component.css',
 })
 export class ConfirmRentComponent implements OnInit, OnDestroy {
+  public environment = environment;
   rent: Rent | null = null;
   vehiculo: Vehicle | null = null;
   private mercadoPago: any;

@@ -236,7 +236,7 @@
   >
     <div class="lightbox-container">
       <img
-        [src]="environmentSERVER_URL+'/uploads/' + selectedImage"
+        [src]="environment.SERVER_URL+'/uploads/' + selectedImage"
         class="lightbox-image"
         alt="Vista ampliada"
         (click)="$event.stopPropagation()"

@@ -9,6 +9,7 @@ import { Category } from '../../../core/models/categories.interface';
 import { CompraService } from '../../../core/services/compra.service';
 import { alertMethod } from '../../../shared/components/alerts/alert-function/alerts.functions';
 import { UniversalAlertComponent } from '../../../shared/components/alerts/universal-alert/universal-alert.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-confirm-purchase',
@@ -18,6 +19,7 @@ import { UniversalAlertComponent } from '../../../shared/components/alerts/unive
   styleUrl: './confirm-purchase.component.css',
 })
 export class ConfirmPurchaseComponent {
+  public environment = environment;
   id: string | null = null;
   usuario: User | null = null;
   selectedCompra: Compra | null = null;

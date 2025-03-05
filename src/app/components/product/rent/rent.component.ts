@@ -44,6 +44,7 @@ declare const MercadoPago: any;
   styleUrls: ['./rent.component.css'],
 })
 export class RentComponent implements OnInit, OnDestroy {
+  public environment = environment;
   total: number = 0;
   diasAlquiler: number = 0;
   private mercadoPago: any;

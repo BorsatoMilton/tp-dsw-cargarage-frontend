@@ -87,7 +87,7 @@ describe('LoginComponent', () => {
 
     const req = httpTestingController.expectOne({
       method: 'POST',
-      url: environmentSERVER_URL+'/api/usuarios/login',
+      url: environment.SERVER_URL+'/api/usuarios/login',
     });
 
     req.flush(mockResponse);
@@ -107,7 +107,7 @@ describe('LoginComponent', () => {
     component.login();
 
     const req = httpTestingController.expectOne(
-      environmentSERVER_URL+'/api/usuarios/login'
+      environment.SERVER_URL+'/api/usuarios/login'
     );
 
     req.flush('Usuario no encontrado', {
