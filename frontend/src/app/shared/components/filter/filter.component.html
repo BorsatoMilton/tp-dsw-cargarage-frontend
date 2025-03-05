@@ -1,0 +1,85 @@
+<form [formGroup]="filterForm" (ngSubmit)="applyFilter()" class="filter-form">
+  <div class="grid-container">
+
+    <div class="form-group">
+      <label for="kilometersDesde">Km Desde:</label>
+      <input
+        type="number"
+        id="kilometersDesde"
+        formControlName="kilometersDesde"
+        placeholder="Ej: 50000"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="kilometersHasta">Km Hasta:</label>
+      <input
+        type="number"
+        id="kilometersHasta"
+        formControlName="kilometersHasta"
+        placeholder="Ej: 150000"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="brand">Marca:</label>
+      <select id="brand" formControlName="brand">
+        <option value="">Selecciona Marca</option>
+        <option *ngFor="let brand of brands" [value]="brand.nombreMarca">
+          {{ brand.nombreMarca }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Categoría:</label>
+      <select id="category" formControlName="category">
+        <option value="">Selecciona Categoría</option>
+        <option
+          *ngFor="let category of categories"
+          [value]="category.nombreCategoria"
+        >
+          {{ category.nombreCategoria }}
+        </option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <label for="priceDesde">Precio Desde:</label>
+      <input
+        type="number"
+        id="priceDesde"
+        formControlName="priceDesde"
+        placeholder="Ej: 20000"
+      />
+    </div>
+    <div class="form-group">
+      <label for="priceHasta">Precio Hasta:</label>
+      <input
+        type="number"
+        id="priceHasta"
+        formControlName="priceHasta"
+        placeholder="Ej: 50000"
+      />
+    </div>
+
+    <div class="form-group checkbox-group mt-4 justify-center">
+      <input type="checkbox" id="isRentable" formControlName="isRentable" />
+      <label for="isRentable">Solo Alquilar</label>
+    </div>
+
+    <div class="form-group checkbox-group mt-4 justify-center">
+      <input type="checkbox" id="isBuyable" formControlName="isBuyable" />
+      <label for="isBuyable">Solo Comprar</label>
+    </div>
+  </div>
+
+
+  <div class="button-group">
+    <button type="submit" class="btn-filter">Filtrar</button>
+    <button type="button" class="btn-reset" (click)="resetFilter()">
+      Limpiar
+    </button>
+  </div>
+</form>

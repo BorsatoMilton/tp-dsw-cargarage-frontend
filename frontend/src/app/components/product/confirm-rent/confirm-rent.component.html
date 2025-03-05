@@ -1,0 +1,48 @@
+<div class="page-container">
+    <div class="vehicle-container col-12">
+      <app-universal-alert></app-universal-alert>
+      <div *ngIf="vehiculo" class="col-12">
+        <img id="imagen-vehiculo" *ngIf="vehiculo.imagenes && vehiculo.imagenes.length > 0"
+          [src]="'http://localhost:3000/uploads/' + vehiculo.imagenes[0]" alt="Imagen del vehículo" />
+        <p *ngIf="!vehiculo.imagenes?.length">No hay imágenes disponibles para este vehículo.</p>
+      </div>
+  
+      <div class="row vehicle-details">
+        <div class="col-lg-6 anuncio">
+          <strong class="titulo">Descripción del vehículo</strong>
+        <hr>
+          <p><strong>Modelo:</strong> {{rent?.vehiculo?.modelo}}</p>
+          <p><strong>Categoria:</strong> {{vehiculo?.categoria?.nombreCategoria}} </p>
+          <p><strong>Marca:</strong> {{vehiculo?.marca?.nombreMarca}}</p>
+          <p><strong>Descripción:</strong> {{rent?.vehiculo?.descripcion}}</p>
+          <p><strong>Transmisión:</strong> {{rent?.vehiculo?.transmision}}</p>
+          <p><strong>Precio Alquiler Diario:</strong> {{ rent?.vehiculo?.precioAlquilerDiario| currency:'ARS' }}</p>
+          <p> <strong>Desde: </strong>{{rent?.fechaHoraInicioAlquiler | date:'yyyy-MM-dd'}} <br> <strong>Hasta: </strong>{{rent?.fechaHoraDevolucion | date:'yyyy-MM-dd'}}</p>
+          <p><strong>Total: </strong>{{totalAlquiler | currency:'ARS'}} </p>
+        </div>
+        <div class="col-lg-6 anuncio">
+          <strong class="titulo">Descripción del propietario</strong>
+        <hr>
+        <p><strong>Nombre:</strong>{{vehiculo?.propietario?.nombre}} </p>
+        <p><strong>Apellido:</strong> {{vehiculo?.propietario?.apellido}} </p>
+        <p><strong>Email:</strong> {{vehiculo?.propietario?.mail}} </p>
+        <p><strong>Direccion:</strong> {{vehiculo?.propietario?.direccion}} </p>
+        <p><strong>Telefono:</strong> {{vehiculo?.propietario?.telefono || 'Sin celular'}} </p>
+        </div> 
+        <button
+        type="button"
+        (click)="confirmRent()"
+        class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="totalAlquiler === 0"
+      >
+        <div class="flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H8v-2h3v-3H8v-2h3V8h2v3h3v2h-3v3h3v2h-3v3h-2v-3z"/>
+          </svg>
+          Pagar con Mercado Pago
+        </div>
+      </button>
+      </div>
+    </div>
+  </div>  
+  

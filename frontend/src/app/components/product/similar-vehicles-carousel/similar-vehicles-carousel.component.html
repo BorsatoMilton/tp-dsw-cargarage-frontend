@@ -1,0 +1,39 @@
+<div class="container">
+<div *ngIf="similarVehicles.length > 0" class="my-8">
+    <h2 class="text-xl font-semibold text-primary mb-4">
+      Más vehículos que te pueden interesar
+    </h2>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:shadow-md transition"
+        *ngFor="let vehicle of similarVehicles"
+        (click)="verVehiculo(vehicle.id)"
+      >
+
+        <img
+          *ngIf="vehicle.imagenes?.length"
+          [src]="'http://localhost:3000/uploads/' + vehicle.imagenes[0]"
+          alt="{{ vehicle.marca.nombreMarca }} {{ vehicle.modelo }}"
+          class="w-full h-40 object-cover rounded mb-2"
+        />
+        <div
+          *ngIf="!vehicle.imagenes?.length"
+          class="h-40 flex items-center justify-center bg-gray-50 rounded mb-2"
+        >
+          <span class="text-gray-500 text-sm">Sin imagen</span>
+        </div>
+  
+        <h3 class="text-md font-semibold text-gray-800">
+          {{ vehicle.marca.nombreMarca }} {{ vehicle.modelo }}
+        </h3>
+        <p class="text-gray-600 text-sm">
+          {{ vehicle.anio }} - {{ vehicle.transmision }}
+        </p>
+        <p class="text-gray-700 font-medium text-sm">
+          {{ vehicle.precioVenta | currency:'ARS':'symbol':'1.0-0' }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

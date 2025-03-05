@@ -1,0 +1,92 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="container my-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+    <h2 class="mb-3 mb-md-0"><strong class="text-primary">GESTION DE ALQUILERES </strong></h2>
+  </div>
+
+  <div class="table-responsive rounded-3 shadow-sm">
+    <table class="table table-hover table-striped mb-0">
+      <thead class="table-primary">
+      <tr>
+        <th>AUTO</th>
+        <th class="d-none d-md-table-cell">FECHA ALQUILER</th>
+        <th>PRECIO DIARIO</th>
+        <th>INICIO ALQUILER</th>
+        <th>FIN ALQUILER</th>
+        <th class="d-none d-md-table-cell">PROPIETARIO</th>
+        <th class="d-none d-md-table-cell">CONTACTO</th>
+        <th>ESTADO</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="alquileres.length > 0">
+      <tr *ngFor="let alquiler of alquileres">
+        <td data-label="Auto">{{ alquiler.vehiculo.modelo}} {{alquiler.vehiculo.anio}}</td>
+        <td data-label="Fecha Alquiler" class="d-none d-md-table-cell">{{ alquiler.fechaAlquiler | date:'yyyy-MM-dd' }}</td>
+        <td data-label="Precio Diario">${{ alquiler.vehiculo.precioAlquilerDiario}}</td>
+        <td data-label="Inicio Alquiler">{{ alquiler.fechaHoraInicioAlquiler | date:'yyyy-MM-dd' }}</td>
+        <td data-label="Fin Alquiler">{{ alquiler.fechaHoraDevolucion | date:'yyyy-MM-dd' }}</td>
+        <td  data-label="Propietario" class="d-none d-md-table-cell">
+          {{ alquiler.vehiculo.propietario.nombre}} {{ alquiler.vehiculo.propietario.apellido}}
+        </td>
+        <td data-label="Contacto" class="d-none d-md-table-cell"><strong>Email:</strong> {{ alquiler.vehiculo.propietario.mail }} <br>
+          <strong>Tel:</strong> {{ alquiler.vehiculo.propietario.telefono  || 'Sin celular'}}
+        </td>
+        <td data-label="Estado">{{ alquiler.estadoAlquiler }}</td>
+        <td data-label="Acciones">
+          <div class="d-flex flex-nowrap gap-1">
+          <button
+          *ngIf="alquiler.estadoAlquiler !== 'CANCELADO' && alquiler.estadoAlquiler !== 'CONFIRMADO' && alquiler.estadoAlquiler !== 'NO CONFIRMADO' && alquiler.estadoAlquiler !== 'FINALIZADO' && alquiler.estadoAlquiler !== 'EN CURSO'"
+          (click)="openModal('cancelarAlquiler', alquiler)"
+          class="btn btn-lg btn-outline-danger"
+          data-bs-toggle="modal"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
+        <button 
+          *ngIf="alquiler.estadoAlquiler === 'FINALIZADO' || alquiler.estadoAlquiler === 'CANCELADO'" 
+          (click)="openModal('borrarAlquiler', alquiler)" 
+          class="btn btn-sm btn-outline-danger ms-4"
+          data-bs-toggle="modal">
+        <mat-icon>delete</mat-icon>
+        </button>
+        <button class="btn btn-light btn-details ms-auto d-table-cell d-md-none" (click)="openRentDetails(alquiler)">
+          <span class="material-icons">
+            info
+          </span>
+        </button>
+        <p *ngIf="alquiler.vehiculo.fechaBaja" style="color: red;">Quedan {{diasRestantes(alquiler)}} restantes antes que se borre el alquiler</p>
+      </div>  
+      </td>
+      </tr>
+    </tbody>
+    <p *ngIf="alquileres.length === 0" class="text-center text-muted">No hay alquileres</p>
+  </table>
+</div>
+
+  <div id="cancelarAlquiler" class="modalChanged">
+    <div class="modal-contentChanged">
+      <span class="close" (click)="closeModal('cancelarAlquiler')">&times;</span>
+      <h2><strong>Cancelar Alquiler</strong></h2>
+      <p>¿Estás seguro de que deseas cancelar el siguiente alquiler?</p>
+      <p><strong>Fecha Alquiler:</strong> {{ selectedRent?.fechaAlquiler | date:'yyyy-MM-dd'}}</p>
+      <button class="btn btn-secondary" (click)="closeModal('cancelarAlquiler')">Cancelar</button>
+      <button class="btn btn-danger" (click)="cancelRent(selectedRent, 'cancelarAlquiler')">Cancelar Alquiler</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="borrarAlquiler" class="modalChanged">
+  <div class="modal-contentChanged">
+    <span class="close" (click)="closeModal('borrarAlquiler')">&times;</span>
+    <h2><strong>Borrar Alquiler</strong></h2>
+    <p>¿Estás seguro de que deseas borrar el siguiente alquiler?</p>
+    <p><strong>Fecha Alquiler:</strong> {{ selectedRent?.fechaAlquiler | date:'yyyy-MM-dd'}}</p>
+    <button class="btn btn-secondary" (click)="closeModal('borrarAlquiler')">Cancelar</button>
+    <button class="btn btn-danger" (click)="removeRent(selectedRent, 'borrarAlquiler')">Borrar Alquiler</button>
+  </div>
+</div>
+
+

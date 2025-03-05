@@ -1,0 +1,90 @@
+<div class="register-container ">
+  <div class="register-box">
+    <app-universal-alert></app-universal-alert>
+    <h2>Registrarse</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="two-column-form">
+
+      <div class="form-column">
+
+        <div class="input">
+          <label for="usuario">Usuario</label>
+          <input type="text" id="usuario" formControlName="usuario" placeholder="Ingrese su usuario">
+          <div *ngIf="registerForm.get('usuario')?.invalid && (registerForm.get('usuario')?.touched || registerForm.get('usuario')?.dirty)">
+            <small *ngIf="registerForm.get('usuario')?.errors?.['required']">Usuario es requerido.</small>
+            <small *ngIf="registerForm.get('usuario')?.errors?.['minlength']">Mínimo 3 caracteres</small>
+          </div>
+        </div>
+
+        <div class="input">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" formControlName="nombre" placeholder="Ingrese su nombre">
+          <div *ngIf="registerForm.get('nombre')?.invalid && (registerForm.get('nombre')?.touched || registerForm.get('nombre')?.dirty)">
+            <small *ngIf="registerForm.get('nombre')?.errors?.['required']">Nombre es requerido.</small>
+          </div>
+        </div>
+
+        <div class="input">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" formControlName="direccion" placeholder="Ingrese su dirección">
+          <div *ngIf="registerForm.get('direccion')?.invalid && (registerForm.get('direccion')?.touched || registerForm.get('direccion')?.dirty)">
+            <small *ngIf="registerForm.get('direccion')?.errors?.['required']">La dirección es requerida.</small>
+          </div>
+        </div>
+
+        <div class="input">
+          <label for="clave">Clave</label>
+          <input type="password" id="clave" formControlName="clave" placeholder="Ingrese su clave">
+          <div *ngIf="registerForm.get('clave')?.invalid && (registerForm.get('clave')?.touched || registerForm.get('clave')?.dirty)">
+            <small *ngIf="registerForm.get('clave')?.errors?.['required']">Clave es requerida.</small>
+            <small *ngIf="registerForm.get('clave')?.errors?.['minlength']">Mínimo 6 caracteres</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+
+        <div class="input">
+          <label for="mail">Correo Electrónico</label>
+          <input type="email" id="mail" formControlName="mail" placeholder="Ingrese su correo electrónico">
+          <div *ngIf="registerForm.get('mail')?.invalid && (registerForm.get('mail')?.touched || registerForm.get('mail')?.dirty)">
+            <small *ngIf="registerForm.get('mail')?.errors?.['required']">Correo requerido.</small>
+            <small *ngIf="registerForm.get('mail')?.errors?.['email']">Formato inválido</small>
+          </div>
+        </div>
+
+        <div class="input">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" formControlName="apellido" placeholder="Ingrese su apellido">
+          <div *ngIf="registerForm.get('apellido')?.invalid && (registerForm.get('apellido')?.touched || registerForm.get('apellido')?.dirty)">
+            <small *ngIf="registerForm.get('apellido')?.errors?.['required']">Apellido es requerido.</small>
+          </div>
+        </div>
+
+
+        <div class="input">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" formControlName="telefono" placeholder="Ingrese su teléfono">
+          <div *ngIf="registerForm.get('telefono')?.invalid && (registerForm.get('telefono')?.touched || registerForm.get('telefono')?.dirty)">
+            <small *ngIf="registerForm.get('telefono')?.errors?.['required']">Teléfono requerido.</small>
+          </div>
+        </div>
+
+
+        <div class="input">
+          <label for="repetirClave">Repetir Clave</label>
+          <input type="password" id="repetirClave" formControlName="repetirClave" placeholder="Repita su clave">
+          <div *ngIf="registerForm.get('repetirClave')?.invalid && (registerForm.get('repetirClave')?.touched || registerForm.get('repetirClave')?.dirty)">
+            <small *ngIf="registerForm.get('repetirClave')?.errors?.['required']">Clave requerida.</small>
+            <small *ngIf="registerForm.get('repetirClave')?.errors?.['minlength']">Mínimo 6 caracteres</small>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="full-width">
+        <button type="submit">Registrarse</button>
+      </div>
+      
+    </form>
+  </div>
+</div>

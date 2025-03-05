@@ -1,0 +1,141 @@
+.login-container {
+    margin: 0;
+    padding: 20px 10px;
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 65vh; 
+    box-sizing: border-box;
+  }
+
+  .login-box {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.557);
+    padding: 20px;
+    width: 90%; 
+    max-width: 400px;
+  }
+  
+  .login-box h2 {
+    margin: 0 0 15px 0;
+    color: #007bff;
+    font-size: 1.5rem; 
+    text-align: center;
+  }
+  
+  .input {
+    margin-bottom: 15px;
+  }
+  
+  .input label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  .input input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .password-register {
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  .password-register a {
+    color: #007bff;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+
+    
+  .password-register a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #007bff;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .password-register a:hover::after {
+    width: 100%;
+  }
+  
+
+  @media (max-width: 768px) {
+    .login-container {
+      padding: 20px;
+      min-height: 90vh;
+    }
+    
+    .login-box {
+      padding: 15px;
+    }
+    
+    .login-box h2 {
+      font-size: 1.3rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .input input {
+      padding: 10px;
+    }
+    
+    button {
+      padding: 10px;
+      font-size: 0.95rem;
+    }
+    
+    .password-register a {
+      font-size: 0.85rem;
+    }
+    
+    .login-box {
+      width: 95%;
+    }
+  }
+  
+  @media (max-width: 360px) {
+    .login-box h2 {
+      font-size: 1.2rem;
+    }
+    
+    .input label {
+      font-size: 0.85rem;
+    }
+    
+    .password-register a {
+      font-size: 0.8rem;
+    }
+  }

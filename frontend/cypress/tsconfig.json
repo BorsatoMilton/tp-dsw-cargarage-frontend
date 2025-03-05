@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json", // Extiende la configuración base
+  "compilerOptions": {
+    "types": ["cypress", "node"], // Tipos de Cypress y Node
+    "isolatedModules": false
+  },
+  "include": [
+    "**/*.ts",                  // Incluir todos los archivos TypeScript en Cypress
+    "../node_modules/cypress"   // Incluir tipos de Cypress desde node_modules
+  ],
+  "exclude": [
+    "../node_modules",          // Excluir node_modules global
+    "../src"                    // Excluir la carpeta src (opcional)
+  ]
+}

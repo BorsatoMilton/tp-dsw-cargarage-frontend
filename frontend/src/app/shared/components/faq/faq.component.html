@@ -1,0 +1,24 @@
+<div class="faq-container">
+    <strong class="text-primary">Preguntas Frecuentes</strong>
+  
+    <div class="faq-item mt-4" *ngFor="let faq of faqs">
+      <div 
+        class="faq-question" 
+        (click)="toggleFaq(faq.id)"
+        [attr.aria-expanded]="selectedFaqId === faq.id"
+      >
+        {{ faq.pregunta }}
+        <span class="faq-icon">{{ selectedFaqId === faq.id ? '▲' : '▼' }}</span>
+      </div>
+      <div 
+        class="faq-answer" 
+        [class.active]="selectedFaqId === faq.id"
+      >
+        {{ faq.respuesta }}
+      </div>
+    </div>
+  
+    <div *ngIf="faqs.length === 0" class="no-results">
+      No se encontraron resultados.
+    </div>
+  </div>

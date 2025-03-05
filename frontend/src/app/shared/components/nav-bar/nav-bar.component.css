@@ -1,0 +1,43 @@
+.relative {
+    position: relative;
+  }
+  
+  #dropdown {
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    z-index: 1050; 
+    min-width: 100%;
+    display: none; 
+  }
+  
+  #dropdown.block {
+    display: block; 
+  }
+  
+  .logo{
+    height: 90px;
+    width: 90px;
+  }
+
+  .logo:hover{
+    transform: rotate(360deg);
+    transition: transform 0.3s;
+  }
+
+  .title{
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: gainsboro;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .title:hover{
+    color: #3498db;
+    transition:  color 0.3s;
+    font-size: 2.1rem;
+    transition: font-size 0.3s;
+  }

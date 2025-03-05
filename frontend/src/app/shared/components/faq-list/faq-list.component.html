@@ -1,0 +1,118 @@
+<div class="container my-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+      <h2 class="mb-3 mb-md-0"><strong class="text-primary">GESTION DE FAQs</strong></h2>
+      <button
+        type="button"
+        class="btn btn-primary btn-lg"
+        data-bs-toggle="modal"
+        data-bs-target="#addFaq"
+      >
+        <i class="bi bi-person-plus me-2"></i>Añadir FAQ
+      </button>
+    </div>
+   
+  
+    <div class="table-responsive rounded-3 shadow-sm">
+      <table class="table table-hover table-striped mb-0">
+        <thead class="table-primary">
+            <tr>
+                <th>Pregunta</th>
+                <th>Respuesta</th>
+                <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody *ngIf="faqs.length > 0">
+            <tr *ngFor="let f of faqs">
+                <td data-label="Pregunta">{{ f.pregunta }}</td>
+                <td data-label="Respuesta">{{ f.respuesta }}</td>
+                <td data-label="Acciones">
+                  <button
+                  (click)="openModal('editFaq', f)"
+                  class="btn btn-lg btn-outline-primary"
+                  data-bs-toggle="modal"
+                >
+                <img src="edit.logo.png" alt="">
+                </button>
+                <button
+                  (click)="openModal('removeFaq', f)"
+                  class="btn btn-lg btn-outline-danger"
+                  data-bs-toggle="modal"
+                >
+                <img src="cancel.logo.png" alt="">
+                </button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="faqs.length === 0">
+          <tr>
+            <td colspan="8" class="text-center py-5 text-muted">
+              <i class="bi bi-people display-6 d-block mb-2"></i>
+              No hay FAQ registradas
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+</div>  
+    
+      <div class="modal fade" id="addFaq" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva FAQ</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form [formGroup]="faqForm" (ngSubmit)="addFaq()">
+                  <div class="col-md-12">
+                  <label for="pregunta">Pregunta</label>
+                  <input type="text" formControlName="pregunta" id="pregunta" name="pregunta" class="form-control" required>
+                  </div>
+                  <div class="col-md-12">
+                    <label for="respuesta">Respuesta</label>
+                    <textarea formControlName="respuesta" id="respuesta" name="respuesta" class="form-control" rows="4" cols="50" required></textarea>
+                  </div>
+    
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-primary" [disabled]="this.faqForm.invalid">Guardar</button>
+                  </div>
+              </form>
+          </div>        
+         </div>
+        </div>
+      </div>
+    
+    <div id="removeFaq" class="modalChanged">
+      <div class="modal-contentChanged">
+        <span class="close" (click)="closeModal('removeFaq')">&times;</span>
+        <h2>Eliminar FAQ</h2>
+        <p><strong>¿Estás seguro de que deseas eliminar la siguiente Pregunta?</strong></p>
+        <p><strong>Pregunta:</strong> {{ selectedFaq?.pregunta }}</p>
+        <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal('removeFaq')">Cancelar</button>
+        <button class="btn btn-danger" (click)="deleteFaq(selectedFaq!, 'removeFaq')">Eliminar</button>
+      </div>
+    </div>
+    </div>
+    
+    <div id="editFaq" class="modalChanged">
+        <div class="modal-contentChanged">
+          <span class="close" (click)="closeModal('editFaq')">&times;</span>
+          <h2>Editar FAQ</h2>
+          <form [formGroup]="faqForm" (ngSubmit)="editFaq()">
+            <div class="col-md-12">
+              <label for="pregunta">Pregunta</label>
+              <input type="text" id="pregunta" formControlName="pregunta" class="form-control" required>
+            </div>
+            <div class="col-md-12">
+                <label for="respuesta">Respuesta</label>
+                <textarea type="text" id="respuesta" formControlName="respuesta" class="form-control" required></textarea>
+              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeModal('editFaq')">Cancelar</button>
+              <button type="submit" class="btn btn-primary" [disabled]="this.faqForm.invalid">Guardar cambios</button>
+            </div>
+          </form>
+        </div>
+    </div>

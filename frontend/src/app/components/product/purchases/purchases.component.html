@@ -1,0 +1,110 @@
+<div class="container my-4">
+
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+    <h2 class="mb-3 mb-md-0"><strong class="text-primary">GESTION DE COMPRAS </strong></h2>
+  </div>
+
+
+
+  <div class="table-responsive rounded-3 shadow-sm">
+    <table class="table table-hover table-striped mb-0">
+    <thead class="table-primary">
+      <tr>
+        <th>VEHICULO</th>
+        <th class="d-none d-md-table-cell">FECHA COMPRA</th>
+        <th class="d-none d-md-table-cell">PRECIO</th>
+        <th>VENDEDOR</th>
+        <th>ESTADO</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="compras.length > 0">
+      <tr *ngFor="let compra of compras">
+        <td data-label="Vehículo">{{ compra.vehiculo.modelo }} {{compra.vehiculo.anio}}</td>
+        <td data-label="Fecha Compra" class="d-none d-md-table-cell">{{ compra.fechaCompra | date: 'yyyy-MM-dd'}} </td>
+        <td data-label="Precio" class="d-none d-md-table-cell">${{ compra.vehiculo.precioVenta }}</td>
+        <td data-label="Vendedor">
+          {{ compra.vehiculo.propietario.nombre }} {{ compra.vehiculo.propietario.apellido }}
+        </td>
+        <td data-label="Estado">{{compra.estadoCompra}}</td>
+
+        <td data-label="Acciones">
+        <div class="d-flex flex-nowrap gap-1">
+          <button
+          *ngIf="compra.estadoCompra !== 'CANCELADA' && compra.estadoCompra !== 'CONFIRMADA' && compra.estadoCompra !== 'NO CONFIRMADA' && compra.estadoCompra !== 'FINALIZADA'" 
+          (click)="openModal('cancelarCompra', compra)"
+          class="btn btn-lg btn-outline-danger"
+          data-bs-toggle="modal"
+        >
+        <img src="cancel.logo.png" alt="">
+        </button>
+        <button 
+          *ngIf="compra.estadoCompra === 'FINALIZADA' || compra.estadoCompra ===  'NO CONFIRMADA' || compra.estadoCompra === 'CANCELADA' || compra.estadoCompra === 'CONFIRMADA'" 
+          (click)="openModal('borrarCompra', compra)" 
+          class="btn btn-sm btn-outline-danger ms-4"
+          data-bs-toggle="modal">
+        <mat-icon>delete</mat-icon>
+        </button>
+        <p *ngIf="compra.vehiculo.fechaBaja" style="color: red;">Quedan {{diasRestantes(compra)}} restantes antes que se borre la compra</p>
+        <button class="btn btn-light btn-details ms-auto d-table-cell d-md-none" (click)="openPurchaseDetails(compra)">
+          <span class="material-icons">info</span>
+        </button>
+      </div>  
+      </td>
+      </tr>
+    </tbody>
+    <p *ngIf="compras.length === 0">No hay compras</p>
+  </table>
+</div>
+
+
+</div>
+  <div id="cancelarCompra" class="modalChanged">
+    <div class="modal-contentChanged">
+      <span class="close" (click)="closeModal('cancelarCompra')">&times;</span>
+      <h2> <strong>Cancelar Compra </strong></h2>
+      <p>¿Estás seguro de que deseas cancelar la compra?</p>
+      <p>
+        <strong>Nombre Vehiculo:</strong>
+        {{ selectedPurchase?.vehiculo?.modelo }}
+      </p>
+      <p>
+        <strong>Fecha de Compra:</strong> {{ selectedPurchase?.fechaCompra | date: 'yyyy-MM-dd' }}
+      </p>
+      <button class="btn btn-secondary" (click)="closeModal('cancelarCompra')">
+        Cancelar
+      </button>
+      <button
+        class="btn btn-danger"
+        (click)="cancelarCompra(selectedPurchase!, 'cancelarCompra')"
+      >
+        Cancelar Compra
+      </button>
+    </div>
+  </div>
+
+
+
+  <div id="borrarCompra" class="modalChanged">
+    <div class="modal-contentChanged">
+      <span class="close" (click)="closeModal('borrarCompra')">&times;</span>
+      <h2>Borrar Compra</h2>
+      <p>¿Estás seguro de que deseas borrar la compra?</p>
+      <p>
+        <strong>Nombre Vehiculo:</strong>
+        {{ selectedPurchase?.vehiculo?.modelo }}
+      </p>
+      <p>
+        <strong>Fecha de Compra:</strong> {{ selectedPurchase?.fechaCompra | date: 'yyyy-MM-dd' }}
+      </p>
+      <button class="btn btn-secondary" (click)="closeModal('borrarCompra')">
+        Cancelar
+      </button>
+      <button
+        class="btn btn-danger"
+        (click)="borrarCompra(selectedPurchase!, 'borrarCompra')"
+      >
+        Borrar Compra
+      </button>
+    </div>
+  </div>

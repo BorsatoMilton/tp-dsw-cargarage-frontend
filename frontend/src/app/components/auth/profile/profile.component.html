@@ -1,0 +1,282 @@
+<div
+  class="max-w-2xl mx-auto my-10 bg-white shadow-md rounded-lg p-8 dark:bg-gray-800"
+>
+  <h2
+    class="text-2xl text-center font-semibold text-gray-900 dark:text-blue-600 mb-6"
+  >
+    Editar Perfil
+  </h2>
+
+  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label
+          for="nombre"
+          class="block text-blue-600 dark:text-blue-600 font-medium mb-1"
+          >Nombre</label
+        >
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          placeholder="Nombre"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label
+          for="apellido"
+          class="block text-blue-600 dark:text-blue-600 font-medium mb-1"
+          >Apellido</label
+        >
+        <input
+          type="text"
+          id="apellido"
+          formControlName="apellido"
+          placeholder="Apellido"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label
+          for="usuario"
+          class="block text-blue-600 dark:text-blue-600 font-medium"
+          >Usuario</label
+        >
+        <input
+          type="text"
+          id="usuario"
+          formControlName="usuario"
+          class="form-control w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Usuario"
+        />
+        <small
+          class="text-red-500"
+          *ngIf="
+            profileForm.get('usuario')?.touched &&
+            profileForm.get('usuario')?.hasError('usernameTaken')
+          "
+        >
+          El usuario ya está en uso.
+        </small>
+        <small
+          class="text-red-500"
+          *ngIf="
+            profileForm.get('usuario')?.touched &&
+            profileForm.get('usuario')?.hasError('required')
+          "
+        >
+          El usuario es obligatorio.
+        </small>
+      </div>
+
+      <div>
+        <label
+          for="email"
+          class="block text-blue-600 dark:text-blue-600 font-medium"
+          >Correo Electrónico</label
+        >
+        <input
+          type="email"
+          id="email"
+          formControlName="mail"
+          class="form-control w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="miemail@ejemplo.com"
+        />
+        <small
+          class="text-red-500"
+          *ngIf="
+            profileForm.get('mail')?.touched &&
+            profileForm.get('mail')?.hasError('emailTaken')
+          "
+        >
+          El correo electrónico ya está en uso.
+        </small>
+        <small
+          class="text-red-500"
+          *ngIf="
+            profileForm.get('mail')?.touched &&
+            profileForm.get('mail')?.hasError('required')
+          "
+        >
+          El correo electrónico es obligatorio.
+        </small>
+        <small
+          class="text-red-500"
+          *ngIf="
+            profileForm.get('mail')?.touched &&
+            profileForm.get('mail')?.hasError('email')
+          "
+        >
+          Formato de correo electrónico inválido.
+        </small>
+      </div>
+
+      <div>
+        <label
+          for="telefono"
+          class="block text-blue-600 dark:text-blue-600 font-medium mb-1"
+          >Teléfono</label
+        >
+        <input
+          type="text"
+          id="telefono"
+          formControlName="telefono"
+          placeholder="341-222355454"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label
+          for="direccion"
+          class="block text-blue-600 dark:text-blue-600 font-medium mb-1"
+          >Dirección</label
+        >
+        <input
+          type="text"
+          id="direccion"
+          formControlName="direccion"
+          placeholder="Montevideo 1234"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+    </div>
+
+    <div class="mt-8 flex justify-center space-x-4">
+      <button
+        type="button"
+        (click)="openModal('updatePassword')"
+        class="px-5 py-2 bg-orange-400 text-white rounded-lg hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      >
+        Cambiar Contraseña
+      </button>
+      <button
+        type="submit"
+        class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+        [disabled]="profileForm.invalid || formPending"
+      >
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+</div>
+
+<div id="updatePassword" class="modalChanged">
+  <div class="modal-contentChanged relative">
+    <span
+      class="close absolute top-2 right-4 text-gray-500 hover:text-red-500 cursor-pointer"
+      (click)="closeModal('updatePassword')"
+      >&times;</span>
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">
+        Actualizar Contraseña
+      </h2>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+      <div class="mb-5">
+        <label
+          for="currentPassword"
+          class="block text-gray-700 dark:text-blue-600 font-medium mb-1"
+        >
+          Contraseña Actual
+        </label>
+        <input
+          type="password"
+          id="currentPassword"
+          formControlName="currentPassword"
+          placeholder="Ingresa tu contraseña actual"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <small
+          class="text-red-500"
+          *ngIf="
+            passwordForm.get('currentPassword')?.touched &&
+            passwordForm.get('currentPassword')?.hasError('required')
+          "
+        >
+          La contraseña actual es obligatoria.
+        </small>
+        <small
+          class="text-red-500"
+          *ngIf="
+            passwordForm.get('currentPassword')?.touched &&
+            passwordForm
+              .get('currentPassword')
+              ?.hasError('invalidCurrentPassword')
+          "
+        >
+          La contraseña actual es incorrecta.
+        </small>
+      </div>
+
+      <div class="mb-5">
+        <label
+          for="newPassword"
+          class="block text-gray-700 dark:text-blue-600 font-medium mb-1"
+        >
+          Nueva Contraseña
+        </label>
+        <input
+          type="password"
+          id="newPassword"
+          formControlName="newPassword"
+          placeholder="Nueva contraseña"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <small
+          class="text-red-500"
+          *ngIf="
+            passwordForm.get('newPassword')?.touched &&
+            passwordForm.get('newPassword')?.invalid
+          "
+        >
+          La nueva contraseña debe tener al menos 6 caracteres.
+        </small>
+      </div>
+
+      <div class="mb-5">
+        <label
+          for="confirmPassword"
+          class="block text-gray-700 dark:text-blue-600 font-medium mb-1"
+        >
+          Confirmar Nueva Contraseña
+        </label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="Repite la nueva contraseña"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+          <small
+          class="text-red-500"
+          *ngIf="
+            passwordForm.get('confirmPassword')?.touched &&
+            passwordForm.hasError('notMatching')
+          "
+        >
+          Las contraseñas deben coincidir.
+        </small>
+      </div>
+
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          (click)="closeModal('updatePassword')"
+          class="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          [disabled]="passwordForm.invalid"
+        >
+          Actualizar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

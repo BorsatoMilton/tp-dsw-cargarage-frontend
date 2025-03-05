@@ -1,0 +1,104 @@
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary"><strong>DASHBOARD</strong></h2>
+    
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Vehículos Disponibles</h5>
+            <p class="card-text display-4">{{ totalVehiculos }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Reservas Realizadas</h5>
+            <p class="card-text display-4">{{ totalReservas }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Compras Finalizadas</h5>
+            <p class="card-text display-4">{{ totalReservas }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card text-white bg-warning mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Ingresos Por Compras</h5>
+            <p class="card-text display-4">${{ totalIngresosPorCompras }}</p>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-md-6">
+        <div class="card text-white bg-warning mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Ingresos Por Reserva</h5>
+            <p class="card-text display-4">${{ totalIngresosPorReserva }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+    <div class="card mt-4 col-md-6 border listados p-3">
+      <div class="card-header">Lista de vehículos activos</div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Marca</th>
+              <th>Precio Venta</th>
+              <th>Precio Alquiler</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let vehiculo of vehiculos">
+              <td>{{ vehiculo.modelo }}</td>
+              <td>{{ vehiculo.marca.nombreMarca }}</td>
+              <td>{{ vehiculo.precioVenta ? ('$' + vehiculo.precioVenta) : 'NO SE VENDE'}}</td>
+              <td>{{ vehiculo.precioAlquilerDiario ? ('$' + vehiculo.precioAlquilerDiario) : 'NO SE ALQUILA' }}</td>
+            </tr>
+            <p *ngIf="vehiculos.length === 0">No hay vehículos activos</p>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card mt-4 col-md-6 border listados p-3">
+        <div class="card-header">Usuarios mas activos</div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Ventas</th>
+                <th>Compras</th>
+                <th>Alquileres</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let usuario of usuariosActivos">
+                <td>{{ usuario.nombre }}</td>
+                <td>{{ usuario.cantVentas }}</td>
+                <td>{{ usuario.cantCompras}}</td>
+                <td>{{ usuario.cantAlquileres}}</td>
+              </tr>
+              <p *ngIf="usuariosActivos.length === 0">No hay usuarios activos</p>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    
+
+  </div>
+  
