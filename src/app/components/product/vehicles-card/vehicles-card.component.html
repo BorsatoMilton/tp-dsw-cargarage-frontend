@@ -21,7 +21,7 @@
                 class="card-img-top img-fluid"
                 [src]="vehiculo.imagenes[0] ? environment.SERVER_URL + '/uploads/' + vehiculo.imagenes[0] : '/sinfoto.jpg'"
                 alt="Imagen del vehículo"
-                *ngIf="vehiculo.imagenes.length > 0"
+                *ngIf="vehiculo.imagenes.length >= 0"
               />
               <button class="btn btn-light btn-details" (click)="openVehicleDetails(vehiculo)">
                 <span class="material-icons">

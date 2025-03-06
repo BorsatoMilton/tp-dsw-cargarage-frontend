@@ -12,7 +12,7 @@
       >
 
         <img
-          *ngIf="vehicle.imagenes?.length"
+          *ngIf="vehicle.imagenes?.length >=0"
           [src]="environment.SERVER_URL+'/uploads/' + vehicle.imagenes[0]"
           alt="{{ vehicle.marca.nombreMarca }} {{ vehicle.modelo }}"
           class="w-full h-40 object-cover rounded mb-2"
