@@ -12,6 +12,7 @@ import {
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '../core/services/auth.service';
 import { UniversalAlertComponent } from '../shared/components/alerts/universal-alert/universal-alert.component';
+import { environment } from '../../environments/environment';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -134,7 +135,7 @@ describe('LoginComponent', () => {
     component.login();
 
     const req = httpTestingController.expectOne(
-      environmentSERVER_URL+'/api/usuarios/login'
+      environment.SERVER_URL+'/api/usuarios/login'
     );
     req.flush('Contraseña incorrecta', {
       status: 401,

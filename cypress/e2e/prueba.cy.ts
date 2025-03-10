@@ -60,12 +60,5 @@ describe('Flujo principal de compra/alquiler de vehículos', () => {
     //Selecciona la opción de perfil
     cy.get('a').contains('Cerrar Sesión').click();
 
-
-
-
-
-
-
-
   });
 });
