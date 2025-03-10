@@ -3,7 +3,7 @@
       <app-universal-alert></app-universal-alert>
       <div *ngIf="vehiculo" class="col-12">
         <img id="imagen-vehiculo" 
-        [src]="vehiculo.imagenes[0] ? environment.SERVER_URL + '/uploads/' + vehiculo.imagenes[0] : '/sinfoto.jpg'" alt="Imagen del vehículo" />
+        [src]="vehiculo.imagenes[0] ? environment.SERVER_URL + '/uploads/' + vehiculo.imagenes[0] : '/sinfoto.jpg'" alt="Imagen del vehículo" onerror="this.onerror=null; this.src='/sinfoto.jpg'" />
         <p *ngIf="vehiculo.imagenes?.length === 0">No hay imágenes disponibles para este vehículo.</p>
       </div>
   

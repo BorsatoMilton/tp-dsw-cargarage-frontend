@@ -26,6 +26,7 @@
                 <img
                   [src]="environment.SERVER_URL+'/uploads/' + imagen"
                   alt="Imagen del vehículo"
+                  onerror="this.onerror=null; this.src='/sinfoto.jpg'"
                   class="carousel-image w-full h-48 object-cover rounded-lg border-2 border-gray-200 cursor-zoom-in"
                 />
               </div>
