@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Rent } from '../models/rent.interface';
 import { User } from '../models/user.interface';
-import { AuthToken } from '../../functions/authToken.function';
+import { AuthToken } from '../functions/authToken.function';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -15,48 +14,39 @@ export class RentsService {
 
   constructor(private http: HttpClient) { }
   getAllRents(): Observable<Rent[]> {
-    const authToken = new AuthToken();
-    return this.http.get<Rent[]>(this.url, { headers: authToken.getAuthHeaders() });
+    return this.http.get<Rent[]>(this.url);
   }
 
   getRentsByVehicle(id: string): Observable<Rent[]> {
-    const authToken = new AuthToken();
-    return this.http.get<Rent[]>(`${this.url}/vehiculo/${id}`, { headers: authToken.getAuthHeaders() });
+    return this.http.get<Rent[]>(`${this.url}/vehiculo/${id}`);
   }
 
   getRentsByUser(id: string): Observable<Rent[]> {
-    const authToken = new AuthToken();
-    return this.http.get<Rent[]>(`${this.url}/usuario/${id}`, { headers: authToken.getAuthHeaders() });
+    return this.http.get<Rent[]>(`${this.url}/usuario/${id}`);
   }
 
   getOneRent(id: string): Observable<Rent> {
-    const authToken = new AuthToken();
-    return this.http.get<Rent>(`${this.url}/${id}`, { headers: authToken.getAuthHeaders() });
+    return this.http.get<Rent>(`${this.url}/${id}`);
   }
 
   addRent(rent:Rent): Observable<Rent> {
-    const authToken = new AuthToken();
-    return this.http.post<Rent>(this.url, rent, { headers: authToken.getAuthHeaders() });
+    return this.http.post<Rent>(this.url, rent);
   }
 
   confirmRent(idRent: string): Observable<Rent> {
-    const authToken = new AuthToken();
-    return this.http.patch<Rent>(`${this.url}/confirmarAlquiler/${idRent}`, {}, { headers: authToken.getAuthHeaders() });
+    return this.http.patch<Rent>(`${this.url}/confirmarAlquiler/${idRent}`, {});
   }
 
   deleteRent(rent: Rent): Observable<Rent> {
-    const authToken = new AuthToken();
-    return this.http.delete<Rent>(`${this.url}/${rent.id}`, { headers: authToken.getAuthHeaders() });
+    return this.http.delete<Rent>(`${this.url}/${rent.id}`)
   }
 
   cancelRent(rent: Rent): Observable<Rent> {
-    const authToken = new AuthToken();
-    return this.http.put<Rent>(`${this.url}/cancelar/${rent.id}`, rent, { headers: authToken.getAuthHeaders() });
+    return this.http.put<Rent>(`${this.url}/cancelar/${rent.id}`, rent);
   }
 
   confirmRentMail(usuario: User,  idAlquiler: string): Observable<Rent> {
-    const authToken = new AuthToken();
-    return this.http.post<Rent>(`${this.url}/confirmarAlquilerMail/${idAlquiler}`,  usuario, { headers: authToken.getAuthHeaders() });
+    return this.http.post<Rent>(`${this.url}/confirmarAlquilerMail/${idAlquiler}`,  usuario);
   }
 
   createPaymentPreference(items: any): Observable<any> {

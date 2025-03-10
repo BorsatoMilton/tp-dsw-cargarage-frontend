@@ -5,8 +5,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-universal-alert',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './universal-alert.component.html',
-  styleUrl: './universal-alert.component.css'
+  templateUrl: './universal-alert.component.html'
 })
 export class UniversalAlertComponent {
 

@@ -132,9 +132,9 @@
               <div class="col-12">
                 <label for="file">Imagenes del Vehiculo</label>
                 <input type="file" id="file" (change)="onFilesSelected($event)" class="form-control" accept="image/*"
-                  multiple disabled>
+                  multiple [disabled]="production">
               </div>
-              <p style="color: red;">Lo coloque en disabled por problema de guardado de fotos local</p>
+              <p *ngIf="production" style="color: red;">Lo coloque en disabled por problema de guardado de fotos local</p>
             </div>
 
             <div class="modal-footer mt-3">

@@ -9,8 +9,7 @@ import { environment } from '../../../../environments/environment.js';
   selector: 'app-similar-vehicles-carousel',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './similar-vehicles-carousel.component.html',
-  styleUrl: './similar-vehicles-carousel.component.css'
+  templateUrl: './similar-vehicles-carousel.component.html'
 })
 export class SimilarVehiclesCarouselComponent implements OnChanges {
   public environment = environment;

@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-searcher',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './searcher.component.html',
-  styleUrl: './searcher.component.css'
+  templateUrl: './searcher.component.html'
 })
 export class SearcherComponent {
 

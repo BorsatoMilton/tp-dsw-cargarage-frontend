@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Faq } from '../models/faq.interface';
-import { AuthToken } from '../../functions/authToken.function';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -18,18 +17,15 @@ export class FaqService {
   }
 
   addFaq(faq: Faq): Observable<Faq> {
-    const authToken = new AuthToken();
-    return this.http.post<Faq>(this.apiUrl, faq, { headers: authToken.getAuthHeaders() });
+    return this.http.post<Faq>(this.apiUrl, faq);
   }
 
   updateFaq(faq: Faq): Observable<Faq> {
-    const authToken = new AuthToken();
-    return this.http.put<Faq>(`${this.apiUrl}/${faq.id}`, faq, { headers: authToken.getAuthHeaders() });
+    return this.http.put<Faq>(`${this.apiUrl}/${faq.id}`, faq);
   }
 
   deleteFaq(id: number): Observable<Faq> {
-    const authToken = new AuthToken();
-    return this.http.delete<Faq>(`${this.apiUrl}/${id}`, { headers: authToken.getAuthHeaders() });
+    return this.http.delete<Faq>(`${this.apiUrl}/${id}`);
   }
 
 }

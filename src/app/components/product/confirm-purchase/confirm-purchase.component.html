@@ -1,9 +1,9 @@
 <div class="page-container">
   <div class="vehicle-container col-12">
     <div *ngIf="vehiculo" class="col-12">
-      <img id="imagen-vehiculo" *ngIf="vehiculo.imagenes && vehiculo.imagenes.length > 0"
-      [src]="vehiculo.imagenes[0] ? environment.SERVER_URL + '/uploads/' + vehiculo.imagenes[0] : '/sinfoto.jpg'" alt="Imagen del vehículo" />
-      <p *ngIf="!vehiculo.imagenes?.length">No hay imágenes disponibles para este vehículo.</p>
+      <img id="imagen-vehiculo"
+      [src]="vehiculo.imagenes[0] ? environment.SERVER_URL + '/uploads/' + vehiculo.imagenes[0] : '/sinfoto.jpg'" alt="Imágen del vehículo" />
+      <p *ngIf="vehiculo.imagenes?.length === 0">No hay imágenes disponibles para este vehículo.</p>
     </div>
 
     <div class="row vehicle-details">

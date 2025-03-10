@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { FaqComponent } from './shared/components/faq/faq.component';
 import { FaqListComponent } from './shared/components/faq-list/faq-list.component';
-import { onlyAdmin } from './guards/onlyAdmin.guard';
+import { onlyAdmin } from './core/guards/onlyAdmin.guard';
 
 export const routes: Routes = [
     { path: 'auth', loadChildren: () => import('./components/auth/auth.routes').then(m => m.authRoutes)},

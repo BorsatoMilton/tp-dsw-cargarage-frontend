@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/categories.interface';
-import { AuthToken } from '../../functions/authToken.function';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -13,33 +12,27 @@ export class CategoriesService {
 
   constructor(private http:HttpClient) { }
   addCategory(category: Category): Observable<Category> {
-    const authToken = new AuthToken();
-    return this.http.post<Category>(this.apiUrl, category, { headers: authToken.getAuthHeaders()});
+    return this.http.post<Category>(this.apiUrl, category);
   }
 
   getAllCategories(): Observable<Category[]> {
-    const authToken = new AuthToken();
-    return this.http.get<Category[]>(this.apiUrl, { headers: authToken.getAuthHeaders()});
+    return this.http.get<Category[]>(this.apiUrl);
   }
 
   deleteCategory(category: Category): Observable<Category> {
-    const authToken = new AuthToken();
-    return this.http.delete<Category>(`${this.apiUrl}/${category.id}`, { headers: authToken.getAuthHeaders()});
+    return this.http.delete<Category>(`${this.apiUrl}/${category.id}`);
   }
 
   editCategory(category: Category): Observable<Category> {
-    const authToken = new AuthToken();
-    return this.http.put<Category>(`${this.apiUrl}/${category.id}`, category, { headers: authToken.getAuthHeaders()});
+    return this.http.put<Category>(`${this.apiUrl}/${category.id}`, category);
   }
   getOneCategory(id:string): Observable<Category> {
-    const authToken = new AuthToken();
-    return this.http.get<Category>(`${this.apiUrl}/${id}`, { headers: authToken.getAuthHeaders()});
+    return this.http.get<Category>(`${this.apiUrl}/${id}`);
   }
 
   getOneCategoryByName(name:string, excludeCategoryId?: string): Observable<Category> {
-    const authToken = new AuthToken();
     const params = new HttpParams().set('excludeCategoryId', excludeCategoryId || '');
-    return this.http.get<Category>(`${this.apiUrl}/byname/${name}`, {params, headers: authToken.getAuthHeaders()});
+    return this.http.get<Category>(`${this.apiUrl}/byname/${name}`, {params});
   }
 }
 

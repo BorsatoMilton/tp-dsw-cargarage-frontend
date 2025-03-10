@@ -21,6 +21,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { BottomSheetConfig } from '../../../core/models/bottom-sheet.interface';
 import { BottomSheetComponent } from '../../../shared/components/bottom-sheet/bottom-sheet.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-vehicle',
@@ -37,6 +38,7 @@ export class VehicleComponent implements OnInit {
   categories: Category[] = [];
   selectedFiles: File[] = [];
   usuario: User | null = null;
+  production: boolean = false;
 
   @ViewChild(UniversalAlertComponent) alertComponent! : UniversalAlertComponent;
 
@@ -74,6 +76,7 @@ export class VehicleComponent implements OnInit {
       this.loadVehicle();
     }   
 
+    this.production = environment.production;
   }
 
   openVehicleDetails(vehicle: Vehicle): void {

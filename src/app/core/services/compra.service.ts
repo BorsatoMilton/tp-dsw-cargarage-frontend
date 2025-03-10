@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Compra } from '../models/compra.interfaces';
-import { AuthToken } from '../../functions/authToken.function';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -11,57 +10,45 @@ import { environment } from '../../../environments/environment';
 export class CompraService {
   private apiUrl = environment.SERVER_URL+'/api/compras';
   
-  
-  
   constructor(private http:HttpClient) { }
   addCompra(idComprador: string, idVehiculo: string): Observable<Compra> {
-    const authToken = new AuthToken();
-    return this.http.post<Compra>(this.apiUrl, {vehiculo: idVehiculo, comprador: idComprador, fechaCancelacion: null}, { headers: authToken.getAuthHeaders()});
+    return this.http.post<Compra>(this.apiUrl, {vehiculo: idVehiculo, comprador: idComprador, fechaCancelacion: null});
   }
   
   getAllCompra(): Observable<Compra[]> {
-    const authToken = new AuthToken();
-    return this.http.get<Compra[]>(this.apiUrl, { headers: authToken.getAuthHeaders()});
+    return this.http.get<Compra[]>(this.apiUrl);
   }
 
   getAllCompraByUser(userId: string): Observable<Compra[]> {
-    const authToken = new AuthToken();
-    return this.http.get<Compra[]>(`${this.apiUrl}/byuser/${userId}`, { headers: authToken.getAuthHeaders()});
+    return this.http.get<Compra[]>(`${this.apiUrl}/byuser/${userId}`);
   }
 
   getOneCompra(id: string): Observable<Compra> {
-    const authToken = new AuthToken();
-    return this.http.get<Compra>(`${this.apiUrl}/${id}`, { headers: authToken.getAuthHeaders()});
+    return this.http.get<Compra>(`${this.apiUrl}/${id}`);
   }
 
   getOneCompraByVehiculo(idVehiculo: string): Observable<Compra> {
-    const authToken = new AuthToken();
-    return this.http.get<Compra>(`${this.apiUrl}/byvehiculo/${idVehiculo}`, { headers: authToken.getAuthHeaders()});
+    return this.http.get<Compra>(`${this.apiUrl}/byvehiculo/${idVehiculo}`);
   }
 
   confirmarCompra(idCompra: string): Observable<Compra> {
-    const authToken = new AuthToken();
-    return this.http.patch<Compra>(`${this.apiUrl}/confirmarCompra/${idCompra}`, {}, { headers: authToken.getAuthHeaders()});
+    return this.http.patch<Compra>(`${this.apiUrl}/confirmarCompra/${idCompra}`, {});
   }
 
   cancelarCompra(idCompra: string): Observable<Compra> {
-    const authToken = new AuthToken();
-    return this.http.patch<Compra>(`${this.apiUrl}/cancelarCompra/${idCompra}`, {}, { headers: authToken.getAuthHeaders()});
+    return this.http.patch<Compra>(`${this.apiUrl}/cancelarCompra/${idCompra}`, {});
   }
 
   confirmarCompraAviso(idCompra: string): Observable<Compra> {
-    const authToken = new AuthToken();
-    return this.http.post<Compra>(`${this.apiUrl}/confirmarCompraAviso/${idCompra}`, {}, { headers: authToken.getAuthHeaders()});
+    return this.http.post<Compra>(`${this.apiUrl}/confirmarMailCompra/${idCompra}`, {});
   }
 
   avisoCompraExitosa(mail:string, idVehiculo: string): Observable<Compra> {
-    const authToken = new AuthToken();
-    return this.http.post<Compra>(`${this.apiUrl}/avisoCompraExitosa/${mail}`, {idVehiculo: idVehiculo}, { headers: authToken.getAuthHeaders()});
+    return this.http.post<Compra>(`${this.apiUrl}/avisoCompraExitosa/${mail}`, {idVehiculo: idVehiculo});
   }
 
   borrarCompra(idCompra: string): Observable<Compra> {
-    const authToken = new AuthToken();
-    return this.http.delete<Compra>(`${this.apiUrl}/${idCompra}`, { headers: authToken.getAuthHeaders()});
+    return this.http.delete<Compra>(`${this.apiUrl}/${idCompra}`);
   }
 
 }
