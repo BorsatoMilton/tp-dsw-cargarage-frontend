@@ -172,6 +172,7 @@ export class ConfirmRentComponent implements OnInit, OnDestroy {
                   preference: { id: preference.id },
                   autoOpen: true, 
               });
+            this.router.navigate(['/']);
           },
           error: (error: any) => {
               console.error('Error en la preferencia de pago:', error);

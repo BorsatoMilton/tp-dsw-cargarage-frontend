@@ -1,5 +1,4 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
@@ -34,10 +33,8 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     const clonedReq = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${token}`)
     });
-    console.log('✅ Token agregado:', clonedReq);
     return next(clonedReq);
   }
 
-  console.log('⚠️ No hay token, enviando request normal');
   return next(req);
 };
