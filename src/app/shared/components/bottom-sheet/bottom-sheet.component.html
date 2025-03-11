@@ -1,0 +1,11 @@
+<div class="bottom-sheet-container">
+    <h3 class="bottom-sheet-title">{{ config.title }}</h3>
+    <div class="bottom-sheet-content">
+      <div *ngFor="let field of config.fields" class="bottom-sheet-field">
+        <p>
+          <strong>{{ field.label }}:</strong> {{ getNestedValue(config.data, field.key) }}
+        </p>
+      </div>
+    </div>
+    <button mat-button class="close-button" (click)="closeSheet()">Cerrar</button>
+  </div>
