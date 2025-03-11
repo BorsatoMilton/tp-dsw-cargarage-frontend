@@ -146,6 +146,7 @@ export class VehicleComponent implements OnInit {
         marca: formValue.marca,
         categoria: formValue.categoria,
         propietario: this.usuario?.id
+        
       };
 
       const formData = new FormData();

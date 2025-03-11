@@ -28,6 +28,11 @@ export class VehiclesCardComponent {
   showFilter = false;
   isMobile = false;
   vehiculoSeleccionado: string | null = null;
+  currentSlideIndex = 0;
+  lightboxActive: boolean = false;
+  selectedImage: string = '';
+  selectedImageIndex: number = 0;
+  selectedVehicle: Vehicle | null = null
 
   constructor(
     private vehicleService: VehiclesService,
@@ -45,7 +50,7 @@ export class VehiclesCardComponent {
     this.vehicleService.getAllVehicle().subscribe({
       next: (data: Vehicle[]) => {
         this.vehicles = data.filter((vehicle) => vehicle?.compra?.estadoCompra !== 'CONFIRMADA' && vehicle?.compra?.estadoCompra !== 'FINALIZADA'); 
-        this.filteredVehicles = this.vehicles;
+        this.filteredVehicles = this.vehicles.sort((a, b) => new Date(b.fechaAlta).getTime() - new Date(a.fechaAlta).getTime());
       },
       error: (err) => {
         console.error('Error al obtener vehiculos:', err);
@@ -128,4 +133,32 @@ export class VehiclesCardComponent {
   onResize(event: Event): void {
     this.checkScreenSize();
   }
+
+  openLightbox(vehiculo: Vehicle): void {
+    this.selectedImage = vehiculo.imagenes[0] || '';
+    this.lightboxActive = true;
+    this.selectedVehicle = vehiculo
+    console.log('Lightbox abierto', vehiculo);
+  }
+  
+  closeLightbox(): void {
+    this.lightboxActive = false;
+    this.selectedVehicle = null
+  }
+  
+  changeLightboxImage(direction: number): void {
+    if (!this.selectedVehicle?.imagenes) return;
+    
+    const length = this.selectedVehicle?.imagenes.length;
+    this.selectedImageIndex = (this.selectedImageIndex + direction + length) % length;
+    this.selectedImage = this.selectedVehicle?.imagenes[this.selectedImageIndex];
+  }
+  
+  closeLightboxOnBackdrop(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.closeLightbox();
+    }
+  }
+    
+  
 }
