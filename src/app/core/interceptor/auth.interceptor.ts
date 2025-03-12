@@ -16,7 +16,6 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     { url: `${apiUrl}/api/vehiculos`, methods: ['GET'] },
     { url: `${apiUrl}/api/compras/confirmarCompra`, methods: ['POST'] },
     { url: `${apiUrl}/api/alquiler/confirmarAlquiler`, methods: ['PATCH'] },
-    { url: `${apiUrl}/api/alquiler`, methods: ['GET'] },
   ];
 
   const isExcluded = excludedEndpoints.some(endpoint =>
@@ -28,7 +27,6 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   const token = localStorage.getItem('token');
-  console.log(token)
   if (token) {
     const clonedReq = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${token}`)

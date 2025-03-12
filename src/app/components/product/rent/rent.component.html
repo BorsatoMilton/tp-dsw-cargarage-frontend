@@ -63,6 +63,24 @@
               <span class="w-24 text-gray-600">Año modelo:</span>
               <span class="font-medium text-gray-800">{{ vehiculo.anio }}</span>
             </div>
+            <div class="flex items-center">
+              <span class="w-24 text-gray-600">Categoría:</span>
+              <span class="font-medium text-gray-800">{{ vehiculo.categoria.nombreCategoria }}</span>
+            </div>
+            <div
+              class="bg-gray-50 rounded-lg p-4 mb-8 border border-gray-200 description"
+            >
+              <h3 class="text-sm font-semibold text-gray-700 uppercase mb-3">
+                Descripción
+              </h3>
+              <div class="flex flex-col space-y-2 text-sm">
+                <div class="flex items-center">
+                  <span class="font-medium text-gray-800">
+                    "{{ vehiculo.descripcion }}"
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

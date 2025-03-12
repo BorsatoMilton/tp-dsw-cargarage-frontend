@@ -15,14 +15,9 @@
           *ngIf="vehicle.imagenes.length >= 0"
           [src]="environment.SERVER_URL+'/uploads/' + vehicle.imagenes[0]"
           alt="{{ vehicle.marca.nombreMarca }} {{ vehicle.modelo }}"
+          onerror="this.onerror=null; this.src='/sinfoto.jpg'"
           class="w-full h-40 object-cover rounded mb-2"
         />
-        <div
-          *ngIf="!vehicle.imagenes?.length"
-          class="h-40 flex items-center justify-center bg-gray-50 rounded mb-2"
-        >
-          <span class="text-gray-500 text-sm">Sin imagen</span>
-        </div>
   
         <h3 class="text-md font-semibold text-gray-800">
           {{ vehicle.marca.nombreMarca }} {{ vehicle.modelo }}

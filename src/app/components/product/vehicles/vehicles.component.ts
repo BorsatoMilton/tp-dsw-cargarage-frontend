@@ -167,6 +167,7 @@ export class VehicleComponent implements OnInit {
           alertMethod('Alta de vehiculos','Vehículo agregado exitosamente', 'success');
           this.loadVehicle();
           this.closeModal('addVehicle');
+          this.vehicleForm.reset()
         },
         error: (err) => {
           this.handleVehicleError(err);

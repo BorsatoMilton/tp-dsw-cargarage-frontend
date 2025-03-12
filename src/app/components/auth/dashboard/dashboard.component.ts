@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.compraService.getAllCompra().subscribe((compras) => {
-      const comprasConfirmadas = compras.filter(compra => compra.estadoCompra === 'CONFIRMADA');
+      const comprasConfirmadas = compras.filter(compra => compra.estadoCompra === 'CONFIRMADA' || compra.estadoCompra === 'FINALIZADA');
       this.totalCompras = comprasConfirmadas.length;
       
       this.totalIngresosPorCompras = comprasConfirmadas.reduce((acc, compra) => {
@@ -64,7 +64,8 @@ export class DashboardComponent implements OnInit {
     });
 
     this.rentService.getAllRents().subscribe((reservas) => {
-      const reservasConfirmadas = reservas.filter(reserva => reserva.estadoAlquiler === 'CONFIRMADO');
+      console.log(reservas)
+      const reservasConfirmadas = reservas.filter(reserva => reserva.estadoAlquiler === 'CONFIRMADO' || reserva.estadoAlquiler === 'EN CURSO' || reserva.estadoAlquiler === 'FINALIZADO');
       this.totalReservas = reservasConfirmadas.length;
       
       this.totalIngresosPorReserva = reservasConfirmadas.reduce((acc, reserva) => {
