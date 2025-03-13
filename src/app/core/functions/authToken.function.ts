@@ -7,6 +7,8 @@ export class AuthToken {
 
   getAuthHeaders() {
     const token = this.getToken();
-    return token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : new HttpHeaders();
+    return token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
   }
 }

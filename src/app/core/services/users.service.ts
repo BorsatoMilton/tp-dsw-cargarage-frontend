@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class UsuariosService {
-  private apiUrl = environment.SERVER_URL+'/api/usuarios';
+  private apiUrl = environment.SERVER_URL + '/api/usuarios';
 
   constructor(private http: HttpClient) {}
 
@@ -19,14 +19,21 @@ export class UsuariosService {
   }
   editUser(user: User): Observable<User> {
     const { clave, ...userWithoutPassword } = user;
-    return this.http.put<User>(`${this.apiUrl}/${user.id}`, userWithoutPassword);
+    return this.http.put<User>(
+      `${this.apiUrl}/${user.id}`,
+      userWithoutPassword
+    );
   }
 
   getAllUser(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
   }
 
-  getOneUserByEmailOrUsername(usuario: string, mail: string, excludeUserId?: string): Observable<User | null> {
+  getOneUserByEmailOrUsername(
+    usuario: string,
+    mail: string,
+    excludeUserId?: string
+  ): Observable<User | null> {
     const params = new HttpParams().set('excludeUserId', excludeUserId || '');
     return this.http.get<User>(`${this.apiUrl}/${usuario}/${mail}`, { params });
   }

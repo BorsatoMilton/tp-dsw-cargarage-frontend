@@ -63,26 +63,32 @@ export class QualificationComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const idUsuario = this.route.snapshot.paramMap.get('usuarioAcalificar');
     const idObjeto = this.route.snapshot.paramMap.get('id');
-  
+
     if (!idUsuario || !idObjeto) {
       alertMethod('Error', 'Parámetros inválidos', 'error');
       this.router.navigate(['/']);
       return;
     }
-  
-    const existeCalificacion = await this.verificarCalificacion(idUsuario, idObjeto);
-  
+
+    const existeCalificacion = await this.verificarCalificacion(
+      idUsuario,
+      idObjeto
+    );
+
     if (existeCalificacion) {
-      alertMethod('Calificar a usuario', 'Ya has calificado a este usuario', 'error');
+      alertMethod(
+        'Calificar a usuario',
+        'Ya has calificado a este usuario',
+        'error'
+      );
       this.router.navigate(['/']);
       return;
     }
-  
+
     this.buscarDatosParaCalificar(idUsuario, idObjeto);
   }
 
   private buscarDatosParaCalificar(idUsuario: string, idObjeto: string): void {
-
     if (idUsuario) {
       this.usuarioService.getOneUserById(idUsuario).subscribe((user) => {
         this.usuarioAcalificar = user;
@@ -91,61 +97,62 @@ export class QualificationComponent implements OnInit {
     }
   }
 
+  private verificarObjeto(id: string): void {
+    this.rentService.getOneRent(id).subscribe({
+      next: (alquiler) => {
+        if (alquiler) {
+          this.esAlquiler = true;
+          this.rent = alquiler;
 
-    private verificarObjeto(id: string): void {
-      this.rentService.getOneRent(id).subscribe({
-        next: (alquiler) => {
-          if (alquiler) {
-            this.esAlquiler = true;
-            this.rent = alquiler;
-            
-            if (alquiler.locatario.id === this.usuarioAcalificar?.id) {
-              this.userRole = 'Locatario';
-              this.usuarioAcalificar = alquiler.locatario;
-            } else {
-              this.userRole = 'Locador';
-              this.usuarioAcalificar = alquiler.vehiculo.propietario;
-            }
+          if (alquiler.locatario.id === this.usuarioAcalificar?.id) {
+            this.userRole = 'Locatario';
+            this.usuarioAcalificar = alquiler.locatario;
           } else {
-            this.compraService.getOneCompra(id).subscribe({
-              next: (compra) => {
-                this.compra = compra;
-                this.esAlquiler = false;
-                
-                if (compra.usuario.id === this.usuarioAcalificar?.id) {
-                  this.userRole = 'Comprador';
-                  this.usuarioAcalificar = compra.usuario;
-                } else {
-                  this.userRole = 'Vendedor';
-                  this.usuarioAcalificar = compra.vehiculo.propietario;
-                }
+            this.userRole = 'Locador';
+            this.usuarioAcalificar = alquiler.vehiculo.propietario;
+          }
+        } else {
+          this.compraService.getOneCompra(id).subscribe({
+            next: (compra) => {
+              this.compra = compra;
+              this.esAlquiler = false;
+
+              if (compra.usuario.id === this.usuarioAcalificar?.id) {
+                this.userRole = 'Comprador';
+                this.usuarioAcalificar = compra.usuario;
+              } else {
+                this.userRole = 'Vendedor';
+                this.usuarioAcalificar = compra.vehiculo.propietario;
               }
-            });
-          }
+            },
+          });
         }
-      });
-    }
-
-  private async verificarCalificacion(usuarioId: string, idObjeto: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      this.qualificationService.checkQualificationExists(usuarioId, idObjeto).subscribe({
-        next: (calificacion) => {
-
-          resolve(!!calificacion); 
-        },
-        error: (error) => {
-      
-          if (error.status === 404) {
-            resolve(false);
-          } else {
-            console.error('Error verificando calificación:', error);
-            resolve(true); 
-          }
-        }
-      });
+      },
     });
   }
 
+  private async verificarCalificacion(
+    usuarioId: string,
+    idObjeto: string
+  ): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.qualificationService
+        .checkQualificationExists(usuarioId, idObjeto)
+        .subscribe({
+          next: (calificacion) => {
+            resolve(!!calificacion);
+          },
+          error: (error) => {
+            if (error.status === 404) {
+              resolve(false);
+            } else {
+              console.error('Error verificando calificación:', error);
+              resolve(true);
+            }
+          },
+        });
+    });
+  }
 
   onSubmit(): void {
     if (!this.usuarioAcalificar) {

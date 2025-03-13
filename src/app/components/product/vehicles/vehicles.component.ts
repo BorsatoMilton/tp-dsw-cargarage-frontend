@@ -17,7 +17,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../../core/models/user.interface';
 import { UniversalAlertComponent } from '../../../shared/components/alerts/universal-alert/universal-alert.component';
 import { alertMethod } from '../../../shared/components/alerts/alert-function/alerts.functions';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { BottomSheetConfig } from '../../../core/models/bottom-sheet.interface';
 import { BottomSheetComponent } from '../../../shared/components/bottom-sheet/bottom-sheet.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -26,7 +26,13 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-vehicle',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, UniversalAlertComponent, MatIconModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    UniversalAlertComponent,
+    MatIconModule,
+  ],
   templateUrl: 'vehicles.component.html',
   styleUrl: './vehicles.component.css',
 })
@@ -40,7 +46,7 @@ export class VehicleComponent implements OnInit {
   usuario: User | null = null;
   production: boolean = false;
 
-  @ViewChild(UniversalAlertComponent) alertComponent! : UniversalAlertComponent;
+  @ViewChild(UniversalAlertComponent) alertComponent!: UniversalAlertComponent;
 
   constructor(
     private fb: FormBuilder,
@@ -71,29 +77,29 @@ export class VehicleComponent implements OnInit {
       this.categories = data;
     });
     this.usuario = this.authService.getCurrentUser();
-  
+
     if (this.usuario !== null) {
       this.loadVehicle();
-    }   
+    }
 
     this.production = environment.production;
   }
 
   openVehicleDetails(vehicle: Vehicle): void {
-       const config: BottomSheetConfig<Vehicle> = {
-          title: 'Detalles del Vehículo',
-          fields: [
-            { key: 'modelo', label: 'Modelo' },
-            { key: 'anio', label: 'Año' },
-            { key: 'descripcion', label: 'Descripción' },
-            { key: 'kilometros', label: 'Kilometros' },
-            { key: 'transmision', label: 'Transmisión' },
-            { key: 'precioAlquilerDiario', label: 'Precio Alquiler Diario' },
-            { key: 'precioVenta', label: 'Precio Venta' },
-          ],
-          data: vehicle,
-        };
-        this.bottomSheet.open(BottomSheetComponent, { data: config });
+    const config: BottomSheetConfig<Vehicle> = {
+      title: 'Detalles del Vehículo',
+      fields: [
+        { key: 'modelo', label: 'Modelo' },
+        { key: 'anio', label: 'Año' },
+        { key: 'descripcion', label: 'Descripción' },
+        { key: 'kilometros', label: 'Kilometros' },
+        { key: 'transmision', label: 'Transmisión' },
+        { key: 'precioAlquilerDiario', label: 'Precio Alquiler Diario' },
+        { key: 'precioVenta', label: 'Precio Venta' },
+      ],
+      data: vehicle,
+    };
+    this.bottomSheet.open(BottomSheetComponent, { data: config });
   }
 
   openModal(modalId: string, vehicle: Vehicle): void {
@@ -136,17 +142,20 @@ export class VehicleComponent implements OnInit {
   addVehicle(): void {
     if (this.vehicleForm.valid) {
       const formValue = this.vehicleForm.value;
-  
+
       const vehicleData = {
         ...formValue,
-        precioVenta: formValue.precioVenta ? Number(formValue.precioVenta) : null,
-        precioAlquilerDiario: formValue.precioAlquilerDiario ? Number(formValue.precioAlquilerDiario) : null,
+        precioVenta: formValue.precioVenta
+          ? Number(formValue.precioVenta)
+          : null,
+        precioAlquilerDiario: formValue.precioAlquilerDiario
+          ? Number(formValue.precioAlquilerDiario)
+          : null,
         kilometros: Number(formValue.kilometros),
         anio: Number(formValue.anio),
         marca: formValue.marca,
         categoria: formValue.categoria,
-        propietario: this.usuario?.id
-        
+        propietario: this.usuario?.id,
       };
 
       const formData = new FormData();
@@ -154,89 +163,116 @@ export class VehicleComponent implements OnInit {
         if (value !== null && value !== undefined) {
           formData.append(key, value.toString());
         } else {
-          formData.append(key, ''); 
+          formData.append(key, '');
         }
       });
-  
-      this.selectedFiles.forEach(file => {
+
+      this.selectedFiles.forEach((file) => {
         formData.append('imagenes', file, file.name);
       });
-  
+
       this.vehicleService.addVehicle(formData).subscribe({
         next: () => {
-          alertMethod('Alta de vehiculos','Vehículo agregado exitosamente', 'success');
+          alertMethod(
+            'Alta de vehiculos',
+            'Vehículo agregado exitosamente',
+            'success'
+          );
           this.loadVehicle();
           this.closeModal('addVehicle');
-          this.vehicleForm.reset()
+          this.vehicleForm.reset();
         },
         error: (err) => {
           this.handleVehicleError(err);
-        }
+        },
       });
     } else {
       this.alertComponent.showAlert('Complete todos los campos', 'error');
     }
   }
-  
+
   private handleVehicleError(err: any): void {
     let errorMessage = 'Error al guardar el vehículo';
-    
+
     if (err.error?.message?.includes('invalid input syntax')) {
       errorMessage = 'Error en los datos numéricos (ej: precio, año)';
     } else if (err.status === 400) {
       errorMessage = 'Datos del vehículo inválidos';
     }
-    
+
     this.alertComponent.showAlert(errorMessage, 'error');
   }
 
   loadVehicle(): void {
     if (this.usuario !== null) {
-      this.vehicleService.getAllVehicleByUser(this.usuario.id).subscribe((vehicles: Vehicle[]) => {
-        this.vehicles = vehicles;
-      });
+      this.vehicleService
+        .getAllVehicleByUser(this.usuario.id)
+        .subscribe((vehicles: Vehicle[]) => {
+          this.vehicles = vehicles;
+        });
     }
   }
 
   editVehicle(): void {
-
     if (!this.selectedVehicle) {
-      alertMethod('Edición de vehículo', 'No se ha seleccionado ningún vehículo para editar', 'error');
+      alertMethod(
+        'Edición de vehículo',
+        'No se ha seleccionado ningún vehículo para editar',
+        'error'
+      );
       return;
     }
 
     const precioVenta = this.vehicleForm.get('precioVenta')?.value;
-    const precioAlquilerDiario = this.vehicleForm.get('precioAlquilerDiario')?.value;
-  
+    const precioAlquilerDiario = this.vehicleForm.get(
+      'precioAlquilerDiario'
+    )?.value;
+
     if (precioVenta === null && precioAlquilerDiario === null) {
-      alertMethod('Edición de vehículo', 'Por favor, ingrese un precio de venta o alquiler', 'error');
+      alertMethod(
+        'Edición de vehículo',
+        'Por favor, ingrese un precio de venta o alquiler',
+        'error'
+      );
       return;
     }
 
     const formValue = this.vehicleForm.value;
     const updatedVehicle: Vehicle = {
-      ...this.selectedVehicle, 
-      ...formValue, 
-      propietario: this.selectedVehicle.propietario, 
+      ...this.selectedVehicle,
+      ...formValue,
+      propietario: this.selectedVehicle.propietario,
     };
-  
+
     this.vehicleService.editVehicle(updatedVehicle).subscribe({
       next: () => {
-        alertMethod('Edición de vehículo', 'Vehículo editado exitosamente', 'success');
-        this.closeModal('editVehicle'); 
-        this.loadVehicle(); 
+        alertMethod(
+          'Edición de vehículo',
+          'Vehículo editado exitosamente',
+          'success'
+        );
+        this.closeModal('editVehicle');
+        this.loadVehicle();
       },
       error: (err) => {
         console.error('Error al editar el vehículo:', err);
-        alertMethod('Edición de vehículo', 'Hubo un error al editar el vehículo', 'error');
+        alertMethod(
+          'Edición de vehículo',
+          'Hubo un error al editar el vehículo',
+          'error'
+        );
       },
     });
   }
-  
+
   removeVehicle(vehicle: Vehicle | null, modalId: string) {
     if (vehicle) {
       this.vehicleService.deleteVehicle(vehicle).subscribe(() => {
-        alertMethod('Eliminación de vehiculo','Vehículo eliminado exitosamente', 'success');
+        alertMethod(
+          'Eliminación de vehiculo',
+          'Vehículo eliminado exitosamente',
+          'success'
+        );
         this.ngOnInit();
         this.closeModal(modalId);
         this.vehicleForm.reset();

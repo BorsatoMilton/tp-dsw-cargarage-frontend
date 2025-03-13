@@ -40,27 +40,30 @@ export class ConfirmPurchaseComponent {
     this.route.queryParams.subscribe((params) => {
       this.id = params['id'];
       if (this.id !== null) {
-          this.compraService.getOneCompra(this.id).subscribe((data) => {
-            if (data === null) {
+        this.compraService.getOneCompra(this.id).subscribe((data) => {
+          if (data === null) {
+            this.router.navigate(['/']);
+            alertMethod(
+              'Confirmar Compra',
+              'Oops! El servidor no reconoce su compra. Tal vez no fue confirmada',
+              'error'
+            );
+          } else {
+            if (data.estadoCompra !== 'PENDIENTE') {
               this.router.navigate(['/']);
               alertMethod(
                 'Confirmar Compra',
-                'Oops! El servidor no reconoce su compra. Tal vez no fue confirmada',
+                `Oops! Esta compra se encuentra en estado ${data.estadoCompra}`,
                 'error'
               );
-            } else {
-              if(data.estadoCompra !== 'PENDIENTE'){
-                this.router.navigate(['/']);
-                alertMethod('Confirmar Compra', `Oops! Esta compra se encuentra en estado ${data.estadoCompra}`, 'error');
-              }
-              this.selectedCompra = data;
-              this.vehiculo = data.vehiculo;
-              this.usuario = data.usuario;
             }
-          });
+            this.selectedCompra = data;
+            this.vehiculo = data.vehiculo;
+            this.usuario = data.usuario;
+          }
+        });
       }
     });
- 
   }
 
   openModal(modalId: string): void {
@@ -116,9 +119,12 @@ export class ConfirmPurchaseComponent {
             this.router.navigate(['/']);
           }
         });
-    }else {
-      alertMethod('Confirmar Compra', 'Oops! Algo salió mal. falta mail, vehiculo, compra', 'error');
+    } else {
+      alertMethod(
+        'Confirmar Compra',
+        'Oops! Algo salió mal. falta mail, vehiculo, compra',
+        'error'
+      );
     }
   }
-
 }

@@ -25,7 +25,14 @@ import { environment } from '../../../../environments/environment.js';
 @Component({
   selector: 'app-compra',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, UniversalAlertComponent, SimilarVehiclesCarouselComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule,
+    UniversalAlertComponent,
+    SimilarVehiclesCarouselComponent,
+  ],
   templateUrl: 'compra.component.html',
   styleUrl: './compra.component.css',
 })
@@ -47,7 +54,7 @@ export class CompraComponent implements OnInit {
   selectedImage: string = '';
   selectedImageIndex: number = 0;
 
-@ViewChild(UniversalAlertComponent) alertComponent!: UniversalAlertComponent;
+  @ViewChild(UniversalAlertComponent) alertComponent!: UniversalAlertComponent;
 
   constructor(
     private fb: FormBuilder,
@@ -74,10 +81,15 @@ export class CompraComponent implements OnInit {
           if (data === null) {
             alertMethod('Realizar Compra', 'Oops, algo fue mal!', 'error');
             this.router.navigate(['/']);
-          
-          } else if(data.propietario.id === this.authService.getCurrentUser()?.id){
+          } else if (
+            data.propietario.id === this.authService.getCurrentUser()?.id
+          ) {
             this.router.navigate(['/']);
-            alertMethod('Comprar vehiculo', 'No puedes comprar tu propio vehículo', 'error');
+            alertMethod(
+              'Comprar vehiculo',
+              'No puedes comprar tu propio vehículo',
+              'error'
+            );
             return;
           } else {
             this.vehiculo = data;
@@ -88,69 +100,70 @@ export class CompraComponent implements OnInit {
       }
     });
     this.usuario = this.authService.getCurrentUser();
-
   }
-
 
   private cargarCalificacionesPropietario(): void {
     if (!this.vehiculo?.propietario?.id) return;
-  
-    this.qualificationCalculator.getPromedio(this.vehiculo.propietario.id).subscribe({
-      next: (promedio) => {
-        this.promedioCalificaciones = promedio;
-        this.obtenerCantidadCalificaciones(this.vehiculo!.propietario!.id)
-      },
-      error: (err) => {
-        console.error('Error obteniendo calificaciones:', err);
-        this.promedioCalificaciones = 0;
-      }
-    });
-  }
-  
-  private obtenerCantidadCalificaciones(idPropietario:string){
-    this.qualificationCalculator.getCalificacionesTotal(idPropietario).subscribe({
-      next: (cantidad) => {
-        this.cantidadCalificaciones = cantidad;
-      },
-      error: (err) => {
-        console.error('Error obteniendo cantidad de calificaciones:', err);
-        this.cantidadCalificaciones = 0;
-      }
-    });
 
+    this.qualificationCalculator
+      .getPromedio(this.vehiculo.propietario.id)
+      .subscribe({
+        next: (promedio) => {
+          this.promedioCalificaciones = promedio;
+          this.obtenerCantidadCalificaciones(this.vehiculo!.propietario!.id);
+        },
+        error: (err) => {
+          console.error('Error obteniendo calificaciones:', err);
+          this.promedioCalificaciones = 0;
+        },
+      });
+  }
+
+  private obtenerCantidadCalificaciones(idPropietario: string) {
+    this.qualificationCalculator
+      .getCalificacionesTotal(idPropietario)
+      .subscribe({
+        next: (cantidad) => {
+          this.cantidadCalificaciones = cantidad;
+        },
+        error: (err) => {
+          console.error('Error obteniendo cantidad de calificaciones:', err);
+          this.cantidadCalificaciones = 0;
+        },
+      });
   }
 
   obtenerCompra(idVehiculo: string): void {
     this.compraService.getOneCompraByVehiculo(idVehiculo).subscribe((data) => {
       if (data === null) {
-        this.compra = null
+        this.compra = null;
         if (this.vehiculo) {
           this.vehiculo.compra = {} as Compra;
           return;
         }
       }
-      if(this.vehiculo) this.vehiculo.compra = data
-    })
+      if (this.vehiculo) this.vehiculo.compra = data;
+    });
   }
 
-nextSlide(): void {
-  if (this.vehiculo && this.vehiculo.imagenes) {
-    this.currentSlideIndex = 
-      (this.currentSlideIndex + 1) % this.vehiculo.imagenes.length;
+  nextSlide(): void {
+    if (this.vehiculo && this.vehiculo.imagenes) {
+      this.currentSlideIndex =
+        (this.currentSlideIndex + 1) % this.vehiculo.imagenes.length;
+    }
   }
-}
 
-previousSlide(): void {
-  if (this.vehiculo && this.vehiculo.imagenes) {
-    this.currentSlideIndex = 
-      (this.currentSlideIndex - 1 + this.vehiculo.imagenes.length) % 
-      this.vehiculo.imagenes.length;
+  previousSlide(): void {
+    if (this.vehiculo && this.vehiculo.imagenes) {
+      this.currentSlideIndex =
+        (this.currentSlideIndex - 1 + this.vehiculo.imagenes.length) %
+        this.vehiculo.imagenes.length;
+    }
   }
-}
 
-goToSlide(index: number): void {
-  this.currentSlideIndex = index;
-}
+  goToSlide(index: number): void {
+    this.currentSlideIndex = index;
+  }
 
   openModal(modalId: string): void {
     const modalDiv = document.getElementById(modalId);
@@ -173,29 +186,29 @@ goToSlide(index: number): void {
   }
 
   openLightbox(index: number): void {
-  this.selectedImageIndex = index;
-  this.selectedImage = this.vehiculo?.imagenes[index] || '';
-  this.lightboxActive = true;
-}
-
-closeLightbox(): void {
-  this.lightboxActive = false;
-}
-
-changeLightboxImage(direction: number): void {
-  if (!this.vehiculo?.imagenes) return;
-  
-  const length = this.vehiculo.imagenes.length;
-  this.selectedImageIndex = (this.selectedImageIndex + direction + length) % length;
-  this.selectedImage = this.vehiculo.imagenes[this.selectedImageIndex];
-}
-
-closeLightboxOnBackdrop(event: MouseEvent): void {
-  if (event.target === event.currentTarget) {
-    this.closeLightbox();
+    this.selectedImageIndex = index;
+    this.selectedImage = this.vehiculo?.imagenes[index] || '';
+    this.lightboxActive = true;
   }
-}
-  
+
+  closeLightbox(): void {
+    this.lightboxActive = false;
+  }
+
+  changeLightboxImage(direction: number): void {
+    if (!this.vehiculo?.imagenes) return;
+
+    const length = this.vehiculo.imagenes.length;
+    this.selectedImageIndex =
+      (this.selectedImageIndex + direction + length) % length;
+    this.selectedImage = this.vehiculo.imagenes[this.selectedImageIndex];
+  }
+
+  closeLightboxOnBackdrop(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.closeLightbox();
+    }
+  }
 
   comprar(): void {
     this.closeModal('comprar');
@@ -215,19 +228,19 @@ closeLightboxOnBackdrop(event: MouseEvent): void {
               'success'
             );
             this.router.navigate(['/']);
-            this.compraService.confirmarCompraAviso(dataCompra.id).subscribe((data) => {
-              if (data === null) {
-                alertMethod(
-                  'Confirmar Compra',
-                  'Oops! El servidor no reconoce su usuario.',
-                  'error'
-                );
-              }
-            });
+            this.compraService
+              .confirmarCompraAviso(dataCompra.id)
+              .subscribe((data) => {
+                if (data === null) {
+                  alertMethod(
+                    'Confirmar Compra',
+                    'Oops! El servidor no reconoce su usuario.',
+                    'error'
+                  );
+                }
+              });
           }
         });
-      }
+    }
   }
-
 }
-

@@ -38,7 +38,7 @@ declare const MercadoPago: any;
     MatInputModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    SimilarVehiclesCarouselComponent
+    SimilarVehiclesCarouselComponent,
   ],
   templateUrl: './rent.component.html',
   styleUrls: ['./rent.component.css'],
@@ -61,7 +61,7 @@ export class RentComponent implements OnInit, OnDestroy {
   lightboxActive: boolean = false;
   selectedImage: string = '';
   selectedImageIndex: number = 0;
-  isRentButtonDisabled : boolean = false;
+  isRentButtonDisabled: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -87,9 +87,13 @@ export class RentComponent implements OnInit, OnDestroy {
       if (this.idVehiculo) {
         this.vehiculoService.getOneVehicle(this.idVehiculo).subscribe({
           next: (data: Vehicle) => {
-            if(data.propietario.id === this.authService.getCurrentUser()?.id){
+            if (data.propietario.id === this.authService.getCurrentUser()?.id) {
               this.router.navigate(['/']);
-              alertMethod('Alquilar vehiculo', 'No puedes alquilar tu propio vehículo', 'error');
+              alertMethod(
+                'Alquilar vehiculo',
+                'No puedes alquilar tu propio vehículo',
+                'error'
+              );
               return;
             }
             this.vehiculo = data;
@@ -97,30 +101,31 @@ export class RentComponent implements OnInit, OnDestroy {
           },
           error: (error) => {
             console.error('Error para obtener el vehiculo:', error);
-          }
+          },
         });
-  
-        this.rentService.getRentsByVehicle(this.idVehiculo).subscribe((reservas) => {
-          if (!reservas) return;
-          this.fechasReservadas = reservas
-            .filter(
-              (reserva: any) =>
-                reserva.estadoAlquiler !== 'CANCELADO' &&
-                reserva.estadoAlquiler !== 'NO CONFIRMADO'
-            )
-            .map((reserva: any) => ({
-              fechaInicio: reserva.fechaHoraInicioAlquiler,
-              fechaFin: reserva.fechaHoraDevolucion,
-            }));
-        });
+
+        this.rentService
+          .getRentsByVehicle(this.idVehiculo)
+          .subscribe((reservas) => {
+            if (!reservas) return;
+            this.fechasReservadas = reservas
+              .filter(
+                (reserva: any) =>
+                  reserva.estadoAlquiler !== 'CANCELADO' &&
+                  reserva.estadoAlquiler !== 'NO CONFIRMADO'
+              )
+              .map((reserva: any) => ({
+                fechaInicio: reserva.fechaHoraInicioAlquiler,
+                fechaFin: reserva.fechaHoraDevolucion,
+              }));
+          });
       }
     });
-  
+
     this.usuario = this.authService.getCurrentUser();
     this.loadMercadoPago();
     this.setupDateListeners();
   }
-  
 
   ngOnDestroy(): void {
     this.cleanupMercadoPago();
@@ -128,12 +133,9 @@ export class RentComponent implements OnInit, OnDestroy {
 
   private async loadMercadoPago(): Promise<void> {
     await this.loadScript('https://sdk.mercadopago.com/js/v2');
-    this.mercadoPago = new MercadoPago(
-      environment.mercadoPagoKey,
-      {
-        locale: 'es-AR',
-      }
-    );
+    this.mercadoPago = new MercadoPago(environment.mercadoPagoKey, {
+      locale: 'es-AR',
+    });
   }
 
   private loadScript(src: string): Promise<void> {
@@ -192,7 +194,6 @@ export class RentComponent implements OnInit, OnDestroy {
 
     return true;
   };
-
 
   dateRangeValidatorFactory() {
     return (group: AbstractControl): ValidationErrors | null => {
@@ -273,42 +274,46 @@ export class RentComponent implements OnInit, OnDestroy {
     if (!this.vehiculo || !this.diasAlquiler) return;
 
     if (this.authService.isAuthenticated()) {
+      const rentalData = {
+        fechaHoraInicioAlquiler: this.rentForm.get('fechaHoraInicioAlquiler')
+          ?.value,
+        fechaHoraDevolucion: this.rentForm.get('fechaHoraDevolucion')?.value,
+        locatario: this.usuario?.id,
+        vehiculo: this.idVehiculo,
+        fechaPago: new Date().toISOString(),
+      };
 
-        const rentalData = {
-          fechaHoraInicioAlquiler: this.rentForm.get('fechaHoraInicioAlquiler')?.value,
-          fechaHoraDevolucion: this.rentForm.get('fechaHoraDevolucion')?.value,
-          locatario: this.usuario?.id,
-          vehiculo: this.idVehiculo,
-          fechaPago: new Date().toISOString(),
-        };
-
-        const paymentData = {
-            items: [
-                {
-                    title: `Alquiler de ${this.vehiculo?.marca.nombreMarca} ${this.vehiculo?.modelo}`,
-                    unit_price: this.vehiculo?.precioAlquilerDiario,
-                    quantity: this.diasAlquiler,
-                    currency_id: 'ARS',
-                },
-            ],
-            external_reference: Date.now().toString(),
-            rentalData, 
-        };
-        this.rentService.createPaymentPreference(paymentData).subscribe({
-            next: (preference) => {
-                this.mercadoPago.checkout({
-                    preference: { id: preference.id },
-                    autoOpen: true, 
-                });
-                this.router.navigate(['/'])
-            },
-            error: (error: any) => {
-                console.error('Error en la preferencia de pago:', error);
-                alertMethod('Error en pago', 'No se pudo generar la preferencia de pago', 'error');
-            }
-        });
+      const paymentData = {
+        items: [
+          {
+            title: `Alquiler de ${this.vehiculo?.marca.nombreMarca} ${this.vehiculo?.modelo}`,
+            unit_price: this.vehiculo?.precioAlquilerDiario,
+            quantity: this.diasAlquiler,
+            currency_id: 'ARS',
+          },
+        ],
+        external_reference: Date.now().toString(),
+        rentalData,
+      };
+      this.rentService.createPaymentPreference(paymentData).subscribe({
+        next: (preference) => {
+          this.mercadoPago.checkout({
+            preference: { id: preference.id },
+            autoOpen: true,
+          });
+          this.router.navigate(['/']);
+        },
+        error: (error: any) => {
+          console.error('Error en la preferencia de pago:', error);
+          alertMethod(
+            'Error en pago',
+            'No se pudo generar la preferencia de pago',
+            'error'
+          );
+        },
+      });
     }
-}
+  }
 
   private cargarCalificacionesPropietario(): void {
     if (!this.vehiculo?.propietario?.id) return;
@@ -340,7 +345,6 @@ export class RentComponent implements OnInit, OnDestroy {
         },
       });
   }
-
 
   rent(): void {
     this.isRentButtonDisabled = true;
@@ -389,8 +393,6 @@ export class RentComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
   nextSlide(): void {
     if (this.vehiculo && this.vehiculo.imagenes) {
       this.currentSlideIndex =
@@ -415,19 +417,20 @@ export class RentComponent implements OnInit, OnDestroy {
     this.selectedImage = this.vehiculo?.imagenes[index] || '';
     this.lightboxActive = true;
   }
-  
+
   closeLightbox(): void {
     this.lightboxActive = false;
   }
-  
+
   changeLightboxImage(direction: number): void {
     if (!this.vehiculo?.imagenes) return;
-    
+
     const length = this.vehiculo.imagenes.length;
-    this.selectedImageIndex = (this.selectedImageIndex + direction + length) % length;
+    this.selectedImageIndex =
+      (this.selectedImageIndex + direction + length) % length;
     this.selectedImage = this.vehiculo.imagenes[this.selectedImageIndex];
   }
-  
+
   closeLightboxOnBackdrop(event: MouseEvent): void {
     if (event.target === event.currentTarget) {
       this.closeLightbox();

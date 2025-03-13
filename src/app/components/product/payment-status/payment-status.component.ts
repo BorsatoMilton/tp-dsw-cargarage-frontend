@@ -6,7 +6,7 @@ import { alertMethod } from '../../../shared/components/alerts/alert-function/al
   selector: 'app-payment-status',
   standalone: true,
   imports: [],
-  templateUrl: './payment-status.component.html'
+  templateUrl: './payment-status.component.html',
 })
 export class PaymentStatusComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) {}

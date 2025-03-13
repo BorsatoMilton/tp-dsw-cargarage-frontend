@@ -8,10 +8,10 @@ import { FaqService } from '../../../core/services/faq.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './faq.component.html',
-  styleUrl: './faq.component.css'
+  styleUrl: './faq.component.css',
 })
-export class FaqComponent implements OnInit{
-  faqs: Faq[] = []
+export class FaqComponent implements OnInit {
+  faqs: Faq[] = [];
   searchText: string = '';
   selectedFaqId: number | null = null;
 
@@ -26,6 +26,4 @@ export class FaqComponent implements OnInit{
   toggleFaq(faqId: number): void {
     this.selectedFaqId = this.selectedFaqId === faqId ? null : faqId;
   }
-
-
 }

@@ -4,7 +4,6 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 
-
 export const isLoggedInGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);

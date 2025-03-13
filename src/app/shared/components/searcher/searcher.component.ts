@@ -5,10 +5,9 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-searcher',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './searcher.component.html'
+  templateUrl: './searcher.component.html',
 })
 export class SearcherComponent {
-
   @Input() data: any[] = [];
 
   @Input() filterAttributes: string[] = [];
@@ -17,18 +16,18 @@ export class SearcherComponent {
 
   searchTerm: string = '';
 
-  
   onSearchChange(): void {
-    
     if (!this.searchTerm) {
       this.filteredData.emit(this.data);
-      return; 
+      return;
     }
-  
 
-    const filtered = this.data.filter(item =>
-      this.filterAttributes.some(attr =>
-        item[attr]?.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
+    const filtered = this.data.filter((item) =>
+      this.filterAttributes.some((attr) =>
+        item[attr]
+          ?.toString()
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase())
       )
     );
 

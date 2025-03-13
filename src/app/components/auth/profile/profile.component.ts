@@ -72,7 +72,7 @@ export class ProfileComponent implements OnInit {
   passwordsMatch(group: AbstractControl) {
     const newPassword = group.get('newPassword')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
-  
+
     if (newPassword !== confirmPassword) {
       group.get('confirmPassword')?.setErrors({ notMatching: true });
       return { notMatching: true };
@@ -81,7 +81,6 @@ export class ProfileComponent implements OnInit {
       return null;
     }
   }
-  
 
   validateCurrentPassword(
     control: AbstractControl
@@ -157,14 +156,22 @@ export class ProfileComponent implements OnInit {
       const updatedUser: User = { ...this.usuario, ...this.profileForm.value };
       this.userService.editUser(updatedUser).subscribe({
         next: () => {
-          const token = this.authService.getCurrentToken()
-          this.authService.setUserSession(updatedUser, token );
+          const token = this.authService.getCurrentToken();
+          this.authService.setUserSession(updatedUser, token);
           this.profileForm.reset();
           this.ngOnInit();
-          alertMethod('Actualizar perfil','Perfil actualizado correctamente', 'success');
+          alertMethod(
+            'Actualizar perfil',
+            'Perfil actualizado correctamente',
+            'success'
+          );
         },
         error: () => {
-          alertMethod('Hubo un error','Error al actualizar el perfil', 'error');
+          alertMethod(
+            'Hubo un error',
+            'Error al actualizar el perfil',
+            'error'
+          );
         },
       });
     }
@@ -179,10 +186,18 @@ export class ProfileComponent implements OnInit {
             this.closeModal('updatePassword');
             this.passwordForm.reset();
             this.ngOnInit();
-            alertMethod('Actualizar perfil','Contraseña actualizada correctamente', 'success');
+            alertMethod(
+              'Actualizar perfil',
+              'Contraseña actualizada correctamente',
+              'success'
+            );
           },
           error: () => {
-            alertMethod('Actualizar perfil','Error al actualizar la contraseña', 'error');
+            alertMethod(
+              'Actualizar perfil',
+              'Error al actualizar la contraseña',
+              'error'
+            );
           },
         });
     } else {

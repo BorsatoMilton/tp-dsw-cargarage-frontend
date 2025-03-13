@@ -5,13 +5,12 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class QualificationsService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  private apiUrl = environment.SERVER_URL+'/api/calificaciones';
+  private apiUrl = environment.SERVER_URL + '/api/calificaciones';
 
   getQualificationsByUserId(userId: string): Observable<Qualification[]> {
     return this.http.get<Qualification[]>(`${this.apiUrl}/${userId}`);

@@ -5,12 +5,12 @@ import { Brand } from '../models/brands.interfaces';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BrandsService {
-  private apiUrl = environment.SERVER_URL+'/api/marcas';
+  private apiUrl = environment.SERVER_URL + '/api/marcas';
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {}
   addBrand(brand: Brand): Observable<Brand> {
     return this.http.post<Brand>(this.apiUrl, brand);
   }
@@ -23,11 +23,11 @@ export class BrandsService {
   getAllBrand(): Observable<Brand[]> {
     return this.http.get<Brand[]>(this.apiUrl);
   }
-  getOneBrand(id:string): Observable<Brand> {
+  getOneBrand(id: string): Observable<Brand> {
     return this.http.get<Brand>(`${this.apiUrl}/${id}`);
   }
   getOneBrandByName(name: string, excludeBrandId?: string): Observable<Brand> {
     const params = new HttpParams().set('excludeBrandId', excludeBrandId || '');
-    return this.http.get<Brand>(`${this.apiUrl}/byname/${name}`, { params} );
+    return this.http.get<Brand>(`${this.apiUrl}/byname/${name}`, { params });
   }
 }

@@ -175,6 +175,12 @@
   color: #000;
 }
 
+.description{
+  width: 100%;
+  max-width: 100%;
+  grid-column: 1 / -1
+}
+
 .lightbox-control.prev {
   left: 20px;
 }

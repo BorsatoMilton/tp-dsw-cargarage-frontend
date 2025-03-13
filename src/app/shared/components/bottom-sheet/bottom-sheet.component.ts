@@ -1,15 +1,17 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import {
+  MAT_BOTTOM_SHEET_DATA,
+  MatBottomSheetRef,
+} from '@angular/material/bottom-sheet';
 import { BottomSheetConfig } from '../../../core/models/bottom-sheet.interface';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-bottom-sheet',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './bottom-sheet.component.html',
-  styleUrl:  './bottom-sheet.component.css'
+  styleUrl: './bottom-sheet.component.css',
 })
 export class BottomSheetComponent {
   constructor(

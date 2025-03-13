@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Vehicle } from '../../../core/models/vehicles.interface';
 import { VehiclesService } from '../../../core/services/vehicles.service';
@@ -9,7 +15,7 @@ import { environment } from '../../../../environments/environment.js';
   selector: 'app-similar-vehicles-carousel',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './similar-vehicles-carousel.component.html'
+  templateUrl: './similar-vehicles-carousel.component.html',
 })
 export class SimilarVehiclesCarouselComponent implements OnChanges {
   public environment = environment;
@@ -39,7 +45,8 @@ export class SimilarVehiclesCarouselComponent implements OnChanges {
       next: (vehicles) => {
         if (this.isRent) {
           this.similarVehicles = vehicles.filter(
-            (v) => v.id !== this.excludeVehicleId && v.precioAlquilerDiario !== null
+            (v) =>
+              v.id !== this.excludeVehicleId && v.precioAlquilerDiario !== null
           );
         } else {
           this.similarVehicles = vehicles.filter(
@@ -50,7 +57,7 @@ export class SimilarVehiclesCarouselComponent implements OnChanges {
       error: (err: any) => {
         console.error('Error al cargar vehículos similares:', err);
         this.similarVehicles = [];
-      }
+      },
     });
   }
 

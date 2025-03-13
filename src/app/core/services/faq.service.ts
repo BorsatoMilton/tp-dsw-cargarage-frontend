@@ -5,12 +5,12 @@ import { Faq } from '../models/faq.interface';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FaqService {
-  apiUrl = environment.SERVER_URL+'/api/faq';
+  apiUrl = environment.SERVER_URL + '/api/faq';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   findAllFaqs(): Observable<Faq[]> {
     return this.http.get<Faq[]>(this.apiUrl);
@@ -27,5 +27,4 @@ export class FaqService {
   deleteFaq(id: number): Observable<Faq> {
     return this.http.delete<Faq>(`${this.apiUrl}/${id}`);
   }
-
 }

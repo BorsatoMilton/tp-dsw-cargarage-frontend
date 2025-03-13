@@ -1,5 +1,5 @@
 export interface RecoveryPassword {
-    asunto: string;
-    destinatario: string;
-    mensaje: string;
+  asunto: string;
+  destinatario: string;
+  mensaje: string;
 }

@@ -9,7 +9,6 @@ import { alertMethod } from '../../../shared/components/alerts/alert-function/al
 import { UniversalAlertComponent } from '../../../shared/components/alerts/universal-alert/universal-alert.component';
 import { environment } from '../../../../environments/environment';
 
-
 declare const MercadoPago: any;
 
 @Component({
@@ -27,7 +26,7 @@ export class ConfirmRentComponent implements OnInit, OnDestroy {
   totalAlquiler: number = 0;
   diasAlquiler: number = 0;
 
-  @ViewChild(UniversalAlertComponent) alertComponent! : UniversalAlertComponent;
+  @ViewChild(UniversalAlertComponent) alertComponent!: UniversalAlertComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +42,11 @@ export class ConfirmRentComponent implements OnInit, OnDestroy {
         this.rentService.getOneRent(idAlquiler).subscribe({
           next: (data) => {
             if (!data) {
-              alertMethod('Confirmar Alquiler','Oops! Algo salio mal!', 'error');
+              alertMethod(
+                'Confirmar Alquiler',
+                'Oops! Algo salio mal!',
+                'error'
+              );
               this.router.navigate(['/']);
             } else {
               if (data.estadoAlquiler !== 'RESERVADO') {
@@ -56,26 +59,36 @@ export class ConfirmRentComponent implements OnInit, OnDestroy {
               }
               this.rent = data;
               if (this.rent) {
-                this.vehicleService.getOneVehicle(this.rent.vehiculo.id).subscribe({
-                  next: (data) => {
-                    this.vehiculo = data;
-                    if (this.vehiculo?.precioAlquilerDiario) {
-                      this.calculateTotal()
-                    }
-                  },
-                  error: (err) => {
-                    if (err.status === 404) {
-                      alertMethod('Confirmar Alquiler','Oops! Algo salio mal!', 'error');
-                      this.router.navigate(['/']);
-                    }
-                  },
-                });
+                this.vehicleService
+                  .getOneVehicle(this.rent.vehiculo.id)
+                  .subscribe({
+                    next: (data) => {
+                      this.vehiculo = data;
+                      if (this.vehiculo?.precioAlquilerDiario) {
+                        this.calculateTotal();
+                      }
+                    },
+                    error: (err) => {
+                      if (err.status === 404) {
+                        alertMethod(
+                          'Confirmar Alquiler',
+                          'Oops! Algo salio mal!',
+                          'error'
+                        );
+                        this.router.navigate(['/']);
+                      }
+                    },
+                  });
               }
             }
           },
           error: (err) => {
             if (err.status === 404) {
-              alertMethod('Confirmar Alquiler','Oops! Algo salio mal!', 'error');
+              alertMethod(
+                'Confirmar Alquiler',
+                'Oops! Algo salio mal!',
+                'error'
+              );
               this.router.navigate(['/']);
             }
           },
@@ -91,12 +104,9 @@ export class ConfirmRentComponent implements OnInit, OnDestroy {
 
   private async loadMercadoPago(): Promise<void> {
     await this.loadScript('https://sdk.mercadopago.com/js/v2');
-    this.mercadoPago = new MercadoPago(
-      environment.mercadoPagoKey,
-      {
-        locale: 'es-AR',
-      }
-    );
+    this.mercadoPago = new MercadoPago(environment.mercadoPagoKey, {
+      locale: 'es-AR',
+    });
   }
 
   private loadScript(src: string): Promise<void> {
@@ -135,8 +145,8 @@ export class ConfirmRentComponent implements OnInit, OnDestroy {
   }
 
   private calculateTotal(): void {
-    const inicio = this.rent?.fechaHoraInicioAlquiler
-    const fin = this.rent?.fechaHoraDevolucion
+    const inicio = this.rent?.fechaHoraInicioAlquiler;
+    const fin = this.rent?.fechaHoraDevolucion;
 
     if (inicio && fin && this.vehiculo) {
       const diffTime = Math.abs(
@@ -144,10 +154,10 @@ export class ConfirmRentComponent implements OnInit, OnDestroy {
       );
       this.diasAlquiler = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       this.diasAlquiler = this.diasAlquiler === 0 ? 1 : this.diasAlquiler;
-      this.totalAlquiler = this.diasAlquiler * this.vehiculo.precioAlquilerDiario;
+      this.totalAlquiler =
+        this.diasAlquiler * this.vehiculo.precioAlquilerDiario;
     }
   }
-
 
   async confirmRent(): Promise<void> {
     if (this.rent !== null) {
@@ -155,31 +165,34 @@ export class ConfirmRentComponent implements OnInit, OnDestroy {
         idAlquiler: this.rent.id!,
       };
       const paymentData = {
-          items: [
-              {
-                  title: `Alquiler de ${this.vehiculo?.marca.nombreMarca} ${this.vehiculo?.modelo}`,
-                  unit_price: this.vehiculo?.precioAlquilerDiario,
-                  quantity: this.diasAlquiler,
-                  currency_id: 'ARS',
-              },
-          ],
-          external_reference: Date.now().toString(),
-          rentalData,
+        items: [
+          {
+            title: `Alquiler de ${this.vehiculo?.marca.nombreMarca} ${this.vehiculo?.modelo}`,
+            unit_price: this.vehiculo?.precioAlquilerDiario,
+            quantity: this.diasAlquiler,
+            currency_id: 'ARS',
+          },
+        ],
+        external_reference: Date.now().toString(),
+        rentalData,
       };
       this.rentService.createPaymentPreference(paymentData).subscribe({
-          next: (preference) => {
-              this.mercadoPago.checkout({
-                  preference: { id: preference.id },
-                  autoOpen: true, 
-              });
-            this.router.navigate(['/']);
-          },
-          error: (error: any) => {
-              console.error('Error en la preferencia de pago:', error);
-              alertMethod('Error en pago', 'No se pudo generar la preferencia de pago', 'error');
-          }
+        next: (preference) => {
+          this.mercadoPago.checkout({
+            preference: { id: preference.id },
+            autoOpen: true,
+          });
+          this.router.navigate(['/']);
+        },
+        error: (error: any) => {
+          console.error('Error en la preferencia de pago:', error);
+          alertMethod(
+            'Error en pago',
+            'No se pudo generar la preferencia de pago',
+            'error'
+          );
+        },
       });
     }
   }
-
 }

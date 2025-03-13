@@ -5,10 +5,9 @@ import { Component, Input } from '@angular/core';
   selector: 'app-universal-alert',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './universal-alert.component.html'
+  templateUrl: './universal-alert.component.html',
 })
 export class UniversalAlertComponent {
-
   @Input() message: string = '';
   @Input() type: 'success' | 'error' | 'info' = 'info';
   @Input() alertId: string = '';
@@ -19,11 +18,10 @@ export class UniversalAlertComponent {
     this.message = message;
     this.type = type;
     this.show = true;
-    setTimeout(() => (this.show = false), 3000); 
+    setTimeout(() => (this.show = false), 3000);
   }
 
   closeAlert() {
     this.show = false;
   }
-
 }

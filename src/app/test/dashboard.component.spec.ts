@@ -18,10 +18,14 @@ describe('DashboardComponent', () => {
   let usuariosServiceSpy: jasmine.SpyObj<UsuariosService>;
 
   beforeEach(async () => {
-    vehiclesServiceSpy = jasmine.createSpyObj('VehiclesService', ['getAllVehicle']);
+    vehiclesServiceSpy = jasmine.createSpyObj('VehiclesService', [
+      'getAllVehicle',
+    ]);
     rentsServiceSpy = jasmine.createSpyObj('RentsService', ['getAllRents']);
     compraServiceSpy = jasmine.createSpyObj('CompraService', ['getAllCompra']);
-    usuariosServiceSpy = jasmine.createSpyObj('UsuariosService', ['getAllUser']);
+    usuariosServiceSpy = jasmine.createSpyObj('UsuariosService', [
+      'getAllUser',
+    ]);
 
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
@@ -29,8 +33,8 @@ describe('DashboardComponent', () => {
         { provide: VehiclesService, useValue: vehiclesServiceSpy },
         { provide: RentsService, useValue: rentsServiceSpy },
         { provide: CompraService, useValue: compraServiceSpy },
-        { provide: UsuariosService, useValue: usuariosServiceSpy }
-      ]
+        { provide: UsuariosService, useValue: usuariosServiceSpy },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
@@ -38,7 +42,6 @@ describe('DashboardComponent', () => {
   });
 
   it('debe crear el componente', () => {
-
     vehiclesServiceSpy.getAllVehicle.and.returnValue(of([]));
     compraServiceSpy.getAllCompra.and.returnValue(of([]));
     usuariosServiceSpy.getAllUser.and.returnValue(of([]));
@@ -49,11 +52,28 @@ describe('DashboardComponent', () => {
   });
 
   it('debe configurar totalVehículos desde vehículosService.getAllVehicle filtrando vehículos sin fechaBaja y sin compra', () => {
-
     const vehicles: Vehicle[] = [
-      { id: '1', marca: 'Toyota', modelo: 'Corolla', fechaBaja: null, compra: null },
-      { id: '2', marca: 'Honda', modelo: 'Civic', fechaBaja: new Date(), compra: null },
-      { id: '3', marca: 'Ford', modelo: 'Focus', fechaBaja: null, compra: { id: 'c1' } }
+      {
+        id: '1',
+        marca: 'Toyota',
+        modelo: 'Corolla',
+        fechaBaja: null,
+        compra: null,
+      },
+      {
+        id: '2',
+        marca: 'Honda',
+        modelo: 'Civic',
+        fechaBaja: new Date(),
+        compra: null,
+      },
+      {
+        id: '3',
+        marca: 'Ford',
+        modelo: 'Focus',
+        fechaBaja: null,
+        compra: { id: 'c1' },
+      },
     ] as any;
 
     vehiclesServiceSpy.getAllVehicle.and.returnValue(of(vehicles));
@@ -68,13 +88,14 @@ describe('DashboardComponent', () => {
   });
 
   it('debe calcular totalCompras y totalIngresosPorCompras correctamente', () => {
-
     const compras = [
       { estadoCompra: 'CONFIRMADA', vehiculo: { precioVenta: 10000 } },
       { estadoCompra: 'PENDIENTE', vehiculo: { precioVenta: 20000 } },
-      { estadoCompra: 'CONFIRMADA', vehiculo: { precioVenta: 15000 } }
+      { estadoCompra: 'CONFIRMADA', vehiculo: { precioVenta: 15000 } },
     ];
-    compraServiceSpy.getAllCompra.and.returnValue(of(compras) as Observable<any[]>);
+    compraServiceSpy.getAllCompra.and.returnValue(
+      of(compras) as Observable<any[]>
+    );
     vehiclesServiceSpy.getAllVehicle.and.returnValue(of([]));
     usuariosServiceSpy.getAllUser.and.returnValue(of([]));
     rentsServiceSpy.getAllRents.and.returnValue(of([]));
@@ -86,23 +107,46 @@ describe('DashboardComponent', () => {
   });
 
   it('debe procesar usuariosActivos correctamente desde usuariosService.getAllUser', () => {
-
     const users: User[] = [
-      { 
-        id: '1', usuario: 'user1', clave: 'x', nombre: 'User', apellido: 'One', 
-        mail: '', direccion: '', telefono: '', 
-        compras: [1, 2], alquilerLocatario: [1], vehiculos: [{ compra: {} }]
+      {
+        id: '1',
+        usuario: 'user1',
+        clave: 'x',
+        nombre: 'User',
+        apellido: 'One',
+        mail: '',
+        direccion: '',
+        telefono: '',
+        compras: [1, 2],
+        alquilerLocatario: [1],
+        vehiculos: [{ compra: {} }],
       },
-      { 
-        id: '2', usuario: 'user2', clave: 'x', nombre: 'User', apellido: 'Two', 
-        mail: '', direccion: '', telefono: '', 
-        compras: [1], alquilerLocatario: [1, 2, 3], vehiculos: []
+      {
+        id: '2',
+        usuario: 'user2',
+        clave: 'x',
+        nombre: 'User',
+        apellido: 'Two',
+        mail: '',
+        direccion: '',
+        telefono: '',
+        compras: [1],
+        alquilerLocatario: [1, 2, 3],
+        vehiculos: [],
       },
-      { 
-        id: '3', usuario: 'user3', clave: 'x', nombre: 'User', apellido: 'Three', 
-        mail: '', direccion: '', telefono: '', 
-        compras: [], alquilerLocatario: [], vehiculos: []
-      }
+      {
+        id: '3',
+        usuario: 'user3',
+        clave: 'x',
+        nombre: 'User',
+        apellido: 'Three',
+        mail: '',
+        direccion: '',
+        telefono: '',
+        compras: [],
+        alquilerLocatario: [],
+        vehiculos: [],
+      },
     ] as any;
 
     usuariosServiceSpy.getAllUser.and.returnValue(of(users));
@@ -112,38 +156,41 @@ describe('DashboardComponent', () => {
 
     fixture.detectChanges();
 
-
     expect(component.usuariosActivos.length).toBeLessThanOrEqual(10);
 
-    const userOne = component.usuariosActivos.find(u => u.nombre.includes('One'));
-    const totalUserOne = (userOne?.cantCompras || 0) + (userOne?.cantAlquileres || 0) + (userOne?.cantVentas || 0);
+    const userOne = component.usuariosActivos.find((u) =>
+      u.nombre.includes('One')
+    );
+    const totalUserOne =
+      (userOne?.cantCompras || 0) +
+      (userOne?.cantAlquileres || 0) +
+      (userOne?.cantVentas || 0);
     expect(totalUserOne).toBe(4);
   });
 
   it('debe calcular totalReservas y totalIngresosPorReserva correctamente', () => {
-
     const rents: Rent[] = [
       {
         id: 'r1',
         estadoAlquiler: 'CONFIRMADO',
         fechaHoraInicioAlquiler: '2025-03-01T00:00:00Z',
         fechaHoraDevolucion: '2025-03-04T00:00:00Z',
-        vehiculo: { precioAlquilerDiario: 100 }
+        vehiculo: { precioAlquilerDiario: 100 },
       },
       {
         id: 'r2',
         estadoAlquiler: 'CONFIRMADO',
         fechaHoraInicioAlquiler: '2025-03-05T00:00:00Z',
         fechaHoraDevolucion: '2025-03-07T00:00:00Z',
-        vehiculo: { precioAlquilerDiario: 150 }
+        vehiculo: { precioAlquilerDiario: 150 },
       },
       {
         id: 'r3',
         estadoAlquiler: 'PENDIENTE',
         fechaHoraInicioAlquiler: '2025-03-08T00:00:00Z',
         fechaHoraDevolucion: '2025-03-10T00:00:00Z',
-        vehiculo: { precioAlquilerDiario: 200 }
-      }
+        vehiculo: { precioAlquilerDiario: 200 },
+      },
     ] as any;
 
     rentsServiceSpy.getAllRents.and.returnValue(of(rents));

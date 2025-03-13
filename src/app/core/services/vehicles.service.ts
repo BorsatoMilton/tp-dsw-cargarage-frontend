@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { Vehicle } from '../models/vehicles.interface';
 import { environment } from '../../../environments/environment';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VehiclesService {
-  private apiUrl = environment.SERVER_URL+'/api/vehiculos';
+  private apiUrl = environment.SERVER_URL + '/api/vehiculos';
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {}
   addVehicle(formData: FormData): Observable<Vehicle> {
     return this.http.post<Vehicle>(this.apiUrl, formData);
   }
@@ -34,5 +34,4 @@ export class VehiclesService {
   getVehiclesByCategory(categoryId: string): Observable<Vehicle[]> {
     return this.http.get<Vehicle[]>(`${this.apiUrl}/categoria/${categoryId}`);
   }
-  
 }

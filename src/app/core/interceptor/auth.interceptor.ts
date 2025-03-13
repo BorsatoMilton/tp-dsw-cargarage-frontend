@@ -10,7 +10,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     { url: `${apiUrl}/api/vehiculos`, methods: ['GET'] },
     { url: `${apiUrl}/api/categorias`, methods: ['GET'] },
     { url: `${apiUrl}/api/faq`, methods: ['GET'] },
-    { url: `${apiUrl}/api/recuperacion`, methods: ['GET','POST'] },
+    { url: `${apiUrl}/api/recuperacion`, methods: ['GET', 'POST'] },
     { url: `${apiUrl}/api/usuarios`, methods: ['POST'] },
     { url: `${apiUrl}/api/usuarios/reset`, methods: ['POST'] },
     { url: `${apiUrl}/api/vehiculos`, methods: ['GET'] },
@@ -18,8 +18,12 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     { url: `${apiUrl}/api/alquiler/confirmarAlquiler`, methods: ['PATCH'] },
   ];
 
-  const isExcluded = excludedEndpoints.some(endpoint =>
-    (req.url === endpoint.url || (req.url.startsWith(endpoint.url) && !req.url.slice(endpoint.url.length).startsWith('/'))) && endpoint.methods.includes(req.method)  
+  const isExcluded = excludedEndpoints.some(
+    (endpoint) =>
+      (req.url === endpoint.url ||
+        (req.url.startsWith(endpoint.url) &&
+          !req.url.slice(endpoint.url.length).startsWith('/'))) &&
+      endpoint.methods.includes(req.method)
   );
 
   if (isExcluded) {
@@ -29,7 +33,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
   if (token) {
     const clonedReq = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${token}`)
+      headers: req.headers.set('Authorization', `Bearer ${token}`),
     });
     return next(clonedReq);
   }

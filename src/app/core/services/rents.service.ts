@@ -7,12 +7,12 @@ import { AuthToken } from '../functions/authToken.function';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RentsService {
-  private url = environment.SERVER_URL+'/api/alquiler';
+  private url = environment.SERVER_URL + '/api/alquiler';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   getAllRents(): Observable<Rent[]> {
     return this.http.get<Rent[]>(this.url);
   }
@@ -29,7 +29,7 @@ export class RentsService {
     return this.http.get<Rent>(`${this.url}/${id}`);
   }
 
-  addRent(rent:Rent): Observable<Rent> {
+  addRent(rent: Rent): Observable<Rent> {
     return this.http.post<Rent>(this.url, rent);
   }
 
@@ -38,28 +38,31 @@ export class RentsService {
   }
 
   deleteRent(rent: Rent): Observable<Rent> {
-    return this.http.delete<Rent>(`${this.url}/${rent.id}`)
+    return this.http.delete<Rent>(`${this.url}/${rent.id}`);
   }
 
   cancelRent(rent: Rent): Observable<Rent> {
     return this.http.put<Rent>(`${this.url}/cancelar/${rent.id}`, rent);
   }
 
-  confirmRentMail(usuario: User,  idAlquiler: string): Observable<Rent> {
-    return this.http.post<Rent>(`${this.url}/confirmarAlquilerMail/${idAlquiler}`,  usuario);
+  confirmRentMail(usuario: User, idAlquiler: string): Observable<Rent> {
+    return this.http.post<Rent>(
+      `${this.url}/confirmarAlquilerMail/${idAlquiler}`,
+      usuario
+    );
   }
 
   createPaymentPreference(items: any): Observable<any> {
     const authToken = new AuthToken();
     const authHeaders = authToken.getAuthHeaders();
-    
+
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set(authHeaders.keys()[0], authHeaders.get(authHeaders.keys()[0]) || '');
-  
+
     return this.http.post<any>(
-      environment.SERVER_URL+'/api/mercadopago/create-preference', 
-      items, 
+      environment.SERVER_URL + '/api/mercadopago/create-preference',
+      items,
       { headers }
     );
   }

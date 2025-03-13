@@ -8,13 +8,12 @@ import { User } from '../../../core/models/user.interface';
 import { CompraService } from '../../../core/services/compra.service';
 import { UsuariosService } from '../../../core/services/users.service';
 
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
   totalVehiculos: number = 0;
@@ -23,25 +22,44 @@ export class DashboardComponent implements OnInit {
   totalIngresosPorReserva: number = 0;
   totalIngresosPorCompras: number = 0;
   vehiculos: Vehicle[] = [];
-  usuariosActivos: { nombre: string; cantCompras: number, cantAlquileres: number, cantVentas: number }[] = [];
+  usuariosActivos: {
+    nombre: string;
+    cantCompras: number;
+    cantAlquileres: number;
+    cantVentas: number;
+  }[] = [];
 
-  constructor(private vehicleService: VehiclesService, private rentService: RentsService, private compraService: CompraService, private usersService: UsuariosService) {}
+  constructor(
+    private vehicleService: VehiclesService,
+    private rentService: RentsService,
+    private compraService: CompraService,
+    private usersService: UsuariosService
+  ) {}
 
   ngOnInit(): void {
     this.vehicleService.getAllVehicle().subscribe((data) => {
-      const vehiculosDisponibles = data.filter(vehiculo => !vehiculo.fechaBaja && !vehiculo.compra);
+      const vehiculosDisponibles = data.filter(
+        (vehiculo) => !vehiculo.fechaBaja && !vehiculo.compra
+      );
       this.vehiculos = vehiculosDisponibles;
       this.totalVehiculos = vehiculosDisponibles.length;
     });
 
     this.compraService.getAllCompra().subscribe((compras) => {
-      const comprasConfirmadas = compras.filter(compra => compra.estadoCompra === 'CONFIRMADA' || compra.estadoCompra === 'FINALIZADA');
+      const comprasConfirmadas = compras.filter(
+        (compra) =>
+          compra.estadoCompra === 'CONFIRMADA' ||
+          compra.estadoCompra === 'FINALIZADA'
+      );
       this.totalCompras = comprasConfirmadas.length;
-      
-      this.totalIngresosPorCompras = comprasConfirmadas.reduce((acc, compra) => {
-        const precio = compra.vehiculo.precioVenta ?? 0;
-        return acc + (typeof precio === 'number' ? precio : 0);
-      }, 0);
+
+      this.totalIngresosPorCompras = comprasConfirmadas.reduce(
+        (acc, compra) => {
+          const precio = compra.vehiculo.precioVenta ?? 0;
+          return acc + (typeof precio === 'number' ? precio : 0);
+        },
+        0
+      );
     });
 
     this.usersService.getAllUser().subscribe((usuarios) => {
@@ -49,34 +67,46 @@ export class DashboardComponent implements OnInit {
         .map((usuario) => {
           const cantCompras = usuario.compras.length;
           const cantAlquileres = usuario.alquilerLocatario.length;
-          const cantVentas = usuario.vehiculos.reduce((acc, vehiculo) => vehiculo.compra ? acc + 1 : acc, 0);
+          const cantVentas = usuario.vehiculos.reduce(
+            (acc, vehiculo) => (vehiculo.compra ? acc + 1 : acc),
+            0
+          );
           const total = cantCompras + cantAlquileres + cantVentas;
           return {
             nombre: usuario.nombre + ' ' + usuario.apellido,
             cantCompras,
             cantAlquileres,
             cantVentas,
-            total
+            total,
           };
         })
         .sort((a, b) => b.total - a.total)
-        .slice(0, 10); 
+        .slice(0, 10);
     });
 
     this.rentService.getAllRents().subscribe((reservas) => {
-      console.log(reservas)
-      const reservasConfirmadas = reservas.filter(reserva => reserva.estadoAlquiler === 'CONFIRMADO' || reserva.estadoAlquiler === 'EN CURSO' || reserva.estadoAlquiler === 'FINALIZADO');
+      const reservasConfirmadas = reservas.filter(
+        (reserva) =>
+          reserva.estadoAlquiler === 'CONFIRMADO' ||
+          reserva.estadoAlquiler === 'EN CURSO' ||
+          reserva.estadoAlquiler === 'FINALIZADO'
+      );
       this.totalReservas = reservasConfirmadas.length;
-      
-      this.totalIngresosPorReserva = reservasConfirmadas.reduce((acc, reserva) => {
-        const dias = this.calcularDias(reserva);
-        const precioDiario = reserva.vehiculo?.precioAlquilerDiario ?? 0;
-        return acc + (dias * (typeof precioDiario === 'number' ? precioDiario : 0));
-      }, 0);
+
+      this.totalIngresosPorReserva = reservasConfirmadas.reduce(
+        (acc, reserva) => {
+          const dias = this.calcularDias(reserva);
+          const precioDiario = reserva.vehiculo?.precioAlquilerDiario ?? 0;
+          return (
+            acc + dias * (typeof precioDiario === 'number' ? precioDiario : 0)
+          );
+        },
+        0
+      );
     });
   }
 
-  calcularDias(reserva: Rent): number { 
+  calcularDias(reserva: Rent): number {
     try {
       const fechaInicio = new Date(reserva.fechaHoraInicioAlquiler);
       const fechaFin = new Date(reserva.fechaHoraDevolucion);
