@@ -13,7 +13,6 @@ import { UsuariosService } from '../../../core/services/users.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
   totalVehiculos: number = 0;
